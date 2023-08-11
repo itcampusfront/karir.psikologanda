@@ -43,7 +43,7 @@ class PapikostickController extends \App\Http\Controllers\Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function print(Request $request)
+    public static function print(Request $request)
     {
         // Set the result
         $result = Result::find($request->id);

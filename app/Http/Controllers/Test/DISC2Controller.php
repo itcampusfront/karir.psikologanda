@@ -198,7 +198,7 @@ class DISC2Controller extends \App\Http\Controllers\Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function print(Request $request)
+    public static function print(Request $request)
     {
         // Set the DISC
         $disc = array('D', 'I', 'S','C');
