@@ -1,0 +1,231 @@
+@extends('layouts/admin/main')
+
+@section('title', 'Edit Magang: '.$internship->name)
+
+@section('content')
+
+<div class="d-sm-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Edit Magang</h1>
+</div>
+<div class="row">
+	<div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{{ route('admin.internship.update') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $internship->id }}">
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Nama <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="name" class="form-control form-control-sm {{ $errors->has('name') ? 'border-danger' : '' }}" value="{{ $internship->name }}" autofocus>
+                            @if($errors->has('name'))
+                            <div class="small text-danger">{{ $errors->first('name') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tempat Lahir <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="birthplace" class="form-control form-control-sm {{ $errors->has('birthplace') ? 'border-danger' : '' }}" value="{{ $internship->attribute->birthplace }}">
+                            @if($errors->has('birthplace'))
+                            <div class="small text-danger">{{ $errors->first('birthplace') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ date('d/m/Y', strtotime($internship->attribute->birthdate)) }}" autocomplete="off">
+                                <span class="input-group-text {{ $errors->has('birthdate') ? 'border-danger' : '' }}"><i class="bi-calendar2"></i></span>
+                            </div>
+                            @if($errors->has('birthdate'))
+                            <div class="small text-danger">{{ $errors->first('birthdate') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            @foreach(gender() as $gender)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" id="gender-{{ $gender['key'] }}" value="{{ $gender['key'] }}" {{ $internship->attribute->gender == $gender['key'] ? 'checked' : '' }}>
+                                <label class="form-check-label" for="gender-{{ $gender['key'] }}">
+                                    {{ $gender['name'] }}
+                                </label>
+                            </div>
+                            @endforeach
+                            @if($errors->has('gender'))
+                            <div class="small text-danger">{{ $errors->first('gender') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Agama <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <select name="religion" class="form-select form-select-sm {{ $errors->has('religion') ? 'border-danger' : '' }}">
+                                <option value="" disabled selected>--Pilih--</option>
+                                @foreach(religion() as $religion)
+                                <option value="{{ $religion['key'] }}" {{ $internship->attribute->religion == $religion['key'] ? 'selected' : '' }}>{{ $religion['name'] }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('religion'))
+                            <div class="small text-danger">{{ $errors->first('religion') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Email <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="email" name="email" class="form-control form-control-sm {{ $errors->has('email') ? 'border-danger' : '' }}" value="{{ $internship->email }}">
+                            @if($errors->has('email'))
+                            <div class="small text-danger">{{ $errors->first('email') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">No. HP <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ $internship->attribute->phone_number }}">
+                            @if($errors->has('phone_number'))
+                            <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">NIK</label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="identity_number" class="form-control form-control-sm {{ $errors->has('identity_number') ? 'border-danger' : '' }}" value="{{ $internship->attribute->identity_number }}">
+                            @if($errors->has('identity_number'))
+                            <div class="small text-danger">{{ $errors->first('identity_number') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Alamat <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <textarea name="address" class="form-control form-control-sm {{ $errors->has('address') ? 'border-danger' : '' }}" rows="3">{{ $internship->attribute->address }}</textarea>
+                            @if($errors->has('address'))
+                            <div class="small text-danger">{{ $errors->first('address') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Pendidikan Terakhir</label>
+                        <div class="col-lg-10 col-md-9">
+                            <textarea name="latest_education" class="form-control form-control-sm {{ $errors->has('latest_education') ? 'border-danger' : '' }}" rows="3">{{ $internship->attribute->latest_education }}</textarea>
+                            @if($errors->has('latest_education'))
+                            <div class="small text-danger">{{ $errors->first('latest_education') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Riwayat Pekerjaan</label>
+                        <div class="col-lg-10 col-md-9">
+                            <textarea name="job_experience" class="form-control form-control-sm {{ $errors->has('job_experience') ? 'border-danger' : '' }}" rows="3">{{ $internship->attribute->job_experience }}</textarea>
+                            @if($errors->has('job_experience'))
+                            <div class="small text-danger">{{ $errors->first('job_experience') }}</div>
+                            @endif
+                        </div>
+                    </div>
+					<div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tujuan Pemeriksaan</label>
+                        <div class="col-lg-10 col-md-9">
+                            <textarea name="inspection" class="form-control form-control-sm {{ $errors->has('inspection') ? 'border-danger' : '' }}" rows="3">{{ $internship->attribute->inspection }}</textarea>
+                            @if($errors->has('inspection'))
+                            <div class="small text-danger">{{ $errors->first('inspection') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Status Hubungan <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <select name="relationship" class="form-select form-select-sm {{ $errors->has('relationship') ? 'border-danger' : '' }}">
+                                <option value="" disabled selected>--Pilih--</option>
+                                @foreach(relationship() as $relationship)
+                                <option value="{{ $relationship['key'] }}" {{ $internship->attribute->relationship == $relationship['key'] ? 'selected' : '' }}>{{ $relationship['name'] }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('relationship'))
+                            <div class="small text-danger">{{ $errors->first('relationship') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Sosial Media <span class="text-danger">*</span></label>
+                        <div class="col-lg-4 col-md-5">
+                            <div class="input-group input-group-sm">
+                                <select name="platform" class="form-select form-select-sm {{ $errors->has('platform') ? 'border-danger' : '' }}">
+                                    @foreach(platform() as $platform)
+                                    <option value="{{ $platform['key'] }}" {{ $internship->socmed ? platform($internship->socmed->platform) == $platform['name'] ? 'selected' : '' : '' }}>{{ $platform['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="text" name="socmed" class="form-control form-control-sm {{ $errors->has('socmed') ? 'border-danger' : '' }}" value="{{ $internship->socmed ? $internship->socmed->account : '' }}">
+                            </div>
+                            @if($errors->has('socmed'))
+                            <div class="small text-danger">{{ $errors->first('socmed') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Nama Orang Tua <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="guardian_name" class="form-control form-control-sm {{ $errors->has('guardian_name') ? 'border-danger' : '' }}" value="{{ $internship->guardian ? $internship->guardian->name : '' }}">
+                            @if($errors->has('guardian_name'))
+                            <div class="small text-danger">{{ $errors->first('guardian_name') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Alamat Orang Tua <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <textarea name="guardian_address" class="form-control form-control-sm {{ $errors->has('guardian_address') ? 'border-danger' : '' }}" rows="3">{{ $internship->guardian ? $internship->guardian->address : '' }}</textarea>
+                            @if($errors->has('guardian_address'))
+                            <div class="small text-danger">{{ $errors->first('guardian_address') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">No. HP Orang Tua <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="guardian_phone_number" class="form-control form-control-sm {{ $errors->has('guardian_phone_number') ? 'border-danger' : '' }}" value="{{ $internship->guardian ? $internship->guardian->phone_number : '' }}">
+                            @if($errors->has('guardian_phone_number'))
+                            <div class="small text-danger">{{ $errors->first('guardian_phone_number') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Pekerjaan Orang Tua <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <input type="text" name="guardian_occupation" class="form-control form-control-sm {{ $errors->has('guardian_occupation') ? 'border-danger' : '' }}" value="{{ $internship->guardian ? $internship->guardian->occupation : '' }}">
+                            @if($errors->has('guardian_occupation'))
+                            <div class="small text-danger">{{ $errors->first('guardian_occupation') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3"></div>
+                        <div class="col-lg-10 col-md-9">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="bi-save me-1"></i> Submit</button>
+                            <a href="{{ route('admin.internship.index') }}" class="btn btn-sm btn-secondary"><i class="bi-arrow-left me-1"></i> Kembali</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+	</div>
+</div>
+
+@endsection
+
+@section('js')
+
+<script type="text/javascript">
+    // Datepicker
+    Spandiv.DatePicker("input[name=birthdate]");
+</script>
+
+@endsection

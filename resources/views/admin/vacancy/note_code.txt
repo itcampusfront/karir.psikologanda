@@ -1,0 +1,33 @@
+{{-- <tbody>
+                            @foreach($vacancies as $vacancy)
+                            <tr>
+                                <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
+                                <td><a href="{{ route('admin.vacancy.applicant', ['id' => $vacancy->id]) }}">{{ $vacancy->name }}</a></td>
+                                <td>{{ $vacancy->position->name }}</td>
+                                <td>{{ $vacancy->applicants }}</td>
+                                <td>
+                                    <span class="d-none">{{ $vacancy->status }}</span>
+                                    <select data-id="{{ $vacancy->id }}" data-value="{{ $vacancy->status }}" class="form-select form-select-sm status">
+                                        <option value="1" {{ $vacancy->status == 1 ? 'selected' : '' }}>Aktif</option>
+                                        <option value="0" {{ $vacancy->status == 0 ? 'selected' : '' }}>Tidak Aktif</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span class="d-none">{{ $vacancy->created_at }}</span>
+                                    {{ date('d/m/Y', strtotime($vacancy->created_at)) }}
+                                    <br>
+                                    <small class="text-muted">{{ date('H:i', strtotime($vacancy->created_at)) }} WIB</span>
+                                </td>
+                                @if(Auth::user()->role->is_global === 1 && Request::query('company') == null)
+                                <td>{{ $vacancy->company->name }}</td>
+                                @endif
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-sm btn-info btn-url" data-id="{{ $vacancy->id }}" data-url="{{ $vacancy->code }}" data-bs-toggle="tooltip" title="Lihat URL"><i class="bi-link"></i></a>
+                                        <a href="{{ route('admin.vacancy.edit', ['id' => $vacancy->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $vacancy->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody> --}}
