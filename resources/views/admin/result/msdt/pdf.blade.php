@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
 	<title>Hasil Tes {{ $test }}</title>
-	<link rel="shortcut icon" href="{{ asset('assets/images/icon.png') }}">
+	<link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}"  type='image/x-icon'>
 	<style>
 	    @page, body {margin-bottom: 10px;, padding-top: 10px; padding-bottom: 10px;}
 	    table {font-size: 13px; margin-bottom: 20px;}
