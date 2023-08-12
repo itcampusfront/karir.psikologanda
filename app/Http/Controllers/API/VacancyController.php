@@ -4,9 +4,10 @@ namespace App\Http\Controllers\API;
 
 use Auth;
 use File;
+use App\Models\Vacancy;
 use Illuminate\Http\Request;
 use Ajifatur\Helpers\DateTimeExt;
-use App\Models\Vacancy;
+use App\Http\Controllers\Controller;
 
 class VacancyController extends Controller
 {
