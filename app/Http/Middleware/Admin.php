@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Admin
 {
@@ -14,8 +15,13 @@ class Admin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        return $next($request);
+        // if (Auth::guard($guard)->check() && ($request->user()->role_id == role('admin') || $request->user()->role_id == role('hrd'))) {
+        if (Auth::guard($guard)->check() && $request->user()->role->is_admin == 1) {
+            return $next($request);
+        }
+        
+        return redirect('/login');
     }
 }
