@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\VacancyController;
+use App\Http\Controllers\API\APISelectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/vacancy', 'API\VacancyController@index')->name('api.vacancy.index');
-Route::get('/vacancy/{url}', 'API\VacancyController@detail')->name('api.vacancy.detail');
-Route::get('/selection/detail', 'SelectionController@detail')->name('api.selection.detail');
+Route::get('/vacancy', [VacancyController::class,'index'])->name('api.vacancy.index');
+Route::get('/vacancy/{url}', [VacancyController::class,'detail'])->name('api.vacancy.detail');
+Route::get('/selection/detail', [APISelectionController::class,'detail'])->name('api.selection.detail');
 
 \Ajifatur\Helpers\RouteExt::api();
