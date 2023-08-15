@@ -229,6 +229,7 @@ class HRDController extends \App\Http\Controllers\Controller
             ],
             'company_name' => 'required',
             'stifin' => 'required',
+            'tests' => 'required|array|min:1',
         ], validationMessages());
         
         
