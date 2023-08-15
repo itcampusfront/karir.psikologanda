@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-lg-2 col-md-3 col-form-label">Tes</label>
+                        <label class="col-lg-2 col-md-3 col-form-label">Tes<span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <div>
                                 @foreach($tests as $test)
@@ -139,6 +139,7 @@
                                     <span class="form-check-label">{{ $test->name }}</span>
                                 </label>
                                 @endforeach
+                                <div class="small text-danger">{{ $errors->first('tests') }}</div>
                             </div>
                         </div>
                     </div>
