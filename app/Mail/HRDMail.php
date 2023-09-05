@@ -2,12 +2,14 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class HRDMail extends Mailable
 {
@@ -18,9 +20,9 @@ class HRDMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
-        //
+        $this->id = $id;
     }
 
     /**
@@ -31,7 +33,8 @@ class HRDMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'H R D Mail',
+            from: new Address('administrator@psikologanda.com', 'HRD Psikologanda'),
+            subject: 'Notifikasi',
         );
     }
 
@@ -42,8 +45,13 @@ class HRDMail extends Mailable
      */
     public function content()
     {
+        $applicant = User::find($this->id);
+
         return new Content(
-            view: 'view.name',
+            view: 'admin.applicant.mail',
+            with: [
+                'applicant' => $applicant
+            ],
         );
     }
 
