@@ -457,23 +457,48 @@ class StudentController extends \App\Http\Controllers\Controller
 
         // Get students
         if(Auth::user()->role->is_global === 1) {
-            $company = Company::find($request->query('company'));
+            $company = Company::find($request->comp_id);
             if($company) {
-                $students = User::whereHas('attribute', function (Builder $query) use ($company) {
-                    return $query->has('company')->where('company_id','=',$company->id);
-                })->where('role_id','=',role('student'))->get();
+                // $students = User::whereHas('attribute', function (Builder $query) use ($company) {
+                //     return $query->has('company')->where('company_id','=',$company->id);
+                // })->where('role_id','=',role('student'))->get();
+
+                $students = UserAttribute::with(['user','company','position','office'])
+                            ->whereHas('user', function($query){
+                                return $query->where('role_id','=',8);
+                            })
+                            ->whereHas('company',function($query) use($company){
+                                return $query->where('id','=',$company->id);
+                            })
+                            ->get();
             }
             else {
-                $students = User::whereHas('attribute', function (Builder $query) {
-                    return $query->has('company');
-                })->where('role_id','=',role('student'))->get();
+                // $students = User::whereHas('attribute', function (Builder $query) {
+                //     return $query->has('company');
+                // })->where('role_id','=',role('student'))->get();
+
+                $students = UserAttribute::with(['user','company','position','office'])
+                            ->whereHas('user', function($query){
+                                return $query->where('role_id','=',8);
+                            })
+                            ->has('company')
+                            ->get();
             }
         }
         elseif(Auth::user()->role->is_global === 0) {
             $company = Company::find(Auth::user()->attribute->company_id);
-            $students = User::whereHas('attribute', function (Builder $query) use ($company) {
-                return $query->has('company')->where('company_id','=',$company->id);
-            })->where('role_id','=',role('student'))->get();
+            // $students = User::whereHas('attribute', function (Builder $query) use ($company) {
+            //     return $query->has('company')->where('company_id','=',$company->id);
+            // })->where('role_id','=',role('student'))->get();
+
+            $students = UserAttribute::with(['user','company','position','office'])
+                        ->whereHas('user', function($query){
+                            return $query->where('role_id','=',8);
+                        })
+                        ->whereHas('company', function($query){
+                            return $query->where('id','=', $company->id);
+                        })
+                        ->get();
         }
 
         // Set filename

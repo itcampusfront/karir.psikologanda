@@ -8,7 +8,7 @@
     <h1 class="h3 mb-2 mb-sm-0">Kelola Siswa</h1>
     <div class="btn-group">
         <a href="{{ route('admin.student.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Siswa</a>
-        <a href="{{ route('admin.student.export') }}" class="btn btn-sm btn-success"><i class="bi-file-excel me-1"></i> Ekspor Data</a>
+        <a id="expo" class="btn btn-sm btn-success"><i class="bi-file-excel me-1"></i> Ekspor Data</a>
         @if((Auth::user()->role->is_global == 1 && Request::query('company') != null) || Auth::user()->role->is_global == 0)
         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modal-import"><i class="bi-upload me-1"></i> Impor Data</a>
         @endif
@@ -145,6 +145,17 @@
         table.cleanData;
         table.ajax.reload();
     }  
+    //link export excel
+    $('#expo').click(function(){
+        var company_id = $('#company').val();
+        if(company_id  != null){
+            window.location.href = "{{ url('/admin/student/export?comp_id=') }}"+company_id;
+        }
+        else{
+            window.location.href = "{{ url('/admin/student/export') }}";
+        }
+    })
+
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
   

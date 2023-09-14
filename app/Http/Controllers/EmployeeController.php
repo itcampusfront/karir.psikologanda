@@ -426,26 +426,59 @@ class EmployeeController extends \App\Http\Controllers\Controller
 
         // Set memory limit
         ini_set("memory_limit", "-1");
-
         // Get employees
         if(Auth::user()->role->is_global === 1) {
-            $company = Company::find($request->query('company'));
+            $company = Company::find($request->comp_id);
             if($company) {
-                $employees = User::whereHas('attribute', function (Builder $query) use ($company) {
-                    return $query->has('company')->where('company_id','=',$company->id);
-                })->where('role_id','=',role('employee'))->get();
+                // $employees = User::whereHas('attribute', function (Builder $query) use ($company) {
+                //     return $query->has('company')->where('company_id','=',$company->id);
+                // })->where('role_id','=',role('employee'))->get();
+
+
+                $employees = UserAttribute::with(['user','company','position','office'])
+                                            ->whereHas('user', function($query){
+                                                return $query->where('role_id','=',3);
+                                            })
+                                            ->whereHas('company', function($query) use($company){
+                                                return $query->where('id','=',$company->id);
+                                            })
+                                            ->has('position')
+                                            ->has('office')
+                                            ->get();                
             }
             else {
-                $employees = User::whereHas('attribute', function (Builder $query) {
-                    return $query->has('company');
-                })->where('role_id','=',role('employee'))->get();
+                // $employees = User::whereHas('attribute', function (Builder $query) {
+                //     return $query->has('company');
+                // })->where('role_id','=',role('employee'))->get();
+
+                $employees = UserAttribute::with(['user','company','position','office'])
+                                            ->whereHas('user', function($query){
+                                                return $query->where('role_id','=',3);
+                                            })
+                                            ->has('company')
+                                            ->has('position')
+                                            ->has('office')
+                                            ->get();
             }
         }
         elseif(Auth::user()->role->is_global === 0) {
             $company = Company::find(Auth::user()->attribute->company_id);
-            $employees = User::whereHas('attribute', function (Builder $query) use ($company) {
-                return $query->has('company')->where('company_id','=',$company->id);
-            })->where('role_id','=',role('employee'))->get();
+            // $employees = User::with(['attribute'])
+            //                 ->whereHas('attribute', function (Builder $query) use ($company) {
+            //                          return $query->has('company')->where('company_id','=',$company->id);
+            //                 })
+            //                 ->where('role_id','=',role('employee'))->get();
+
+            $employees = UserAttribute::with(['user','company','position','office'])
+                                    ->whereHas('company', function($query) use($company){
+                                        return $query->where('id','=',$company->id);
+                                    })
+                                    ->whereHas('user', function($query){
+                                        return $query->where('role_id','=', 3);
+                                    })
+                                    ->has('position')
+                                    ->has('office')
+                                    ->get();
         }
 
         // Set filename

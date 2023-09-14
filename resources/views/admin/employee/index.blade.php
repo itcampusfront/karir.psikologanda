@@ -7,8 +7,8 @@
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
     <h1 class="h3 mb-2 mb-sm-0">Kelola Karyawan</h1>
     <div class="btn-group">
-        <a href="{{ route('admin.employee.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Karyawan</a>
-        <a href="{{ route('admin.employee.export') }}" class="btn btn-sm btn-success"><i class="bi-file-excel me-1"></i> Ekspor Data</a>
+        <a id="impo" href="{{ route('admin.employee.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Karyawan</a>
+        <a id="expo" class="btn btn-sm btn-success"><i class="bi-file-excel me-1"></i> Ekspor Data</a>
         @if((Auth::user()->role->is_global == 1 && Request::query('company') != null) || Auth::user()->role->is_global == 0)
         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modal-import"><i class="bi-upload me-1"></i> Impor Data</a>
         @endif
@@ -142,7 +142,18 @@
         var table = $(idtable).DataTable();
         table.cleanData;
         table.ajax.reload();
-    }  
+    } 
+    
+    $('#expo').click(function(){
+        var company_id = $('#company').val();
+        if(company_id  != null){
+            window.location.href = "{{ url('/admin/employee/export?comp_id=') }}"+company_id;
+        }
+        else{
+            window.location.href = "{{ url('/admin/employee/export') }}";
+        }
+    })
+
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
   
