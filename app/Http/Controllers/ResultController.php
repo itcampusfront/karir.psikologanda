@@ -199,25 +199,25 @@ class ResultController extends \App\Http\Controllers\Controller
         if($result->test->code == 'disc-40-soal')
             return DISC1Controller::detail($result);
         // DISC 2.0
-        elseif($result->test->code == 'disc-24-soal')
+        elseif($result->test->code == 'disc-24-soal' || $result->test->code == 'disc-24-soal-1')
             return DISC2Controller::detail($result);
         // IST
         elseif($result->test->code == 'ist')
             return ISTController::detail($result);
         // MSDT
-        elseif($result->test->code == 'msdt')
+        elseif($result->test->code == 'msdt' || $result->test->code == 'msdt-1')
             return MSDtController::detail($result);
 		// Assesment
-        elseif($result->test->code == 'assesment')
+        elseif($result->test->code == 'assesment' || $result->test->code == 'assesment-01')
             return AssesmentController::detail($result);
 		// Assesment 1.0
-        elseif($result->test->code == 'assesment-10')
+        elseif($result->test->code == 'assesment-10' || $result->test->code == 'assesment-11')
             return Assesment10Controller::detail($result);
 		// Assesment 2.0
-        elseif($result->test->code == 'assesment-20')
+        elseif($result->test->code == 'assesment-20' || $result->test->code == 'assesment-21')
             return Assesment20Controller::detail($result);
         // Papikostick
-        elseif($result->test->code == 'papikostick')
+        elseif($result->test->code == 'papikostick' || $result->test->code == 'papikostick-1')
             return PapikostickController::detail($result);
         // SDI
         elseif($result->test->code == 'sdi')
