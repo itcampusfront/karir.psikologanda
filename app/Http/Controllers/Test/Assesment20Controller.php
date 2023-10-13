@@ -20,6 +20,7 @@ class Assesment20Controller extends \App\Http\Controllers\Controller
     public static function detail($result)
     {
         // Check the access
+        
         // has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Set the description
