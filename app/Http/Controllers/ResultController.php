@@ -268,26 +268,26 @@ class ResultController extends \App\Http\Controllers\Controller
         if($request->path == 'disc-40-soal')
             return DISC1Controller::print($request);
         // DISC 2.0
-        elseif($request->path == 'disc-24-soal')
+        elseif($request->path == 'disc-24-soal' || $request->path == 'disc-24-soal-1')
             return DISC2Controller::print($request);
         // IST
         elseif($request->path == 'ist')
             // abort(404);
             return ISTController::print($request);
         // MSDT
-        elseif($request->path == 'msdt')
+        elseif($request->path == 'msdt' || $request->path == 'msdt-1')
             return MSDtController::print($request);
 		 // Assesment
-        elseif($request->path == 'assesment')
+        elseif($request->path == 'assesment' || $request->path == 'assesment-01')
             return AssesmentController::print($request);
 		// Assesment 1.0
-        elseif($request->path == 'assesment-10')
+        elseif($request->path == 'assesment-10' || $request->path == 'assesment-11')
             return Assesment10Controller::print($request);
 		// Assesment 2.0
-        elseif($request->path == 'assesment-20')
+        elseif($request->path == 'assesment-20' || $request->path == 'assesment-21')
             return Assesment20Controller::print($request);
         // Papikostick
-        elseif($request->path == 'papikostick')
+        elseif($request->path == 'papikostick' || $request->path == 'papikostick-1')
             return PapikostickController::print($request);
         // SDI
         elseif($request->path == 'sdi')
