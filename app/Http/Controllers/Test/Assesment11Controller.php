@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Test;
 
-use App\Models\Result;
+use PDF;
 use Dompdf\FontMetrics;
-use Barryvdh\DomPDF\PDF;
-use App\Models\Description;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Result;
+use App\Models\Description;
 
 class Assesment11Controller extends Controller
 {
