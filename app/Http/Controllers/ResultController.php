@@ -268,30 +268,45 @@ class ResultController extends \App\Http\Controllers\Controller
         if($request->path == 'disc-40-soal')
             return DISC1Controller::print($request);
         // DISC 2.0
-        elseif($request->path == 'disc-24-soal' || $request->path == 'disc-24-soal-1')
+        elseif($request->path == 'disc-24-soal')
             return DISC2Controller::print($request);
+        //--
+        elseif($request->path == 'disc-24-soal-1')
+            return DISC2Controller::cetak($request);
         // IST
         elseif($request->path == 'ist')
             // abort(404);
             return ISTController::print($request);
         // MSDT
-        elseif($request->path == 'msdt' || $request->path == 'msdt-1')
+        elseif($request->path == 'msdt')
             return MSDtController::print($request);
+        //--
+        elseif($request->path == 'msdt-1')
+            return MSDtController::cetak($request);
 		 // Assesment
-        elseif($request->path == 'assesment' || $request->path == 'assesment-01')
+        elseif($request->path == 'assesment')
             return AssesmentController::print($request);
+        //--
+        elseif($request->path == 'assesment-01')
+            return AssesmentController::cetak($request);
 		// Assesment 1.0
-        elseif($request->path == 'assesment-10' || $request->path == 'assesment-11')
+        elseif($request->path == 'assesment-10')
             return Assesment10Controller::print($request);
+        //--
+        elseif($request->path == 'assesment-11')
+            return Assesment10Controller::cetak($request);
 		// Assesment 2.0
         elseif($request->path == 'assesment-20')
             return Assesment20Controller::print($request);
-        //
+        //--
         elseif($request->path == 'assesment-21')
             return Assesment20Controller::cetak($request);
         // Papikostick
-        elseif($request->path == 'papikostick' || $request->path == 'papikostick-1')
+        elseif($request->path == 'papikostick')
             return PapikostickController::print($request);
+        //--
+        elseif($request->path == 'papikostick-1')
+            return PapikostickController::cetak($request);
         // SDI
         elseif($request->path == 'sdi')
             return SDIController::print($request);

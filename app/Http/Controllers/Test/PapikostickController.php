@@ -72,4 +72,34 @@ class PapikostickController extends \App\Http\Controllers\Controller
         
         return $pdf->stream($request->name . '_' . $request->test . '.pdf');
     }
+
+    public static function cetak(Request $request)
+    {
+        // Set the result
+        $result = Result::find($request->id);
+        $result->result = json_decode($result->result, true);
+		
+        // Set the description
+        $description = Description::where('packet_id','=',$result->packet_id)->first();
+        $description->description = json_decode($description->description, true);
+        
+        // Set the letters
+        $letters = ["N","G","A","L","P","I","T","V","X","S","B","O","R","D","C","Z","E","K","F","W"];
+        
+        // PDF
+        $pdf = PDF::loadview('admin/result/papikostick/pdf', [
+            'result' => $result,
+            'letters' => $letters,
+            'description' => $description,
+            'image' => $request->image,
+            'name' => $request->name,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'position' => $request->position,
+            'test' => $request->test,
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+        
+        return $pdf->stream($request->name . '_' . $request->test . '.pdf');
+    }
 }

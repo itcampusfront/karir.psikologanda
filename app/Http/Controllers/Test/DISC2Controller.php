@@ -237,4 +237,43 @@ class DISC2Controller extends \App\Http\Controllers\Controller
         
         return $pdf->stream($request->name . '_' . $request->test . '.pdf');
     }
+    public static function cetak(Request $request)
+    {
+        // Set the DISC
+        $disc = array('D', 'I', 'S','C');
+		
+		// Set the index
+		$index = json_decode($request->index, true);
+		
+        // Set the description
+        $description = Description::where('packet_id','=',$request->packet_id)->first();
+        $description->description = json_decode($description->description, true);
+		
+		// Set the MOST, LEAST, CHANGE
+		$most = $description->description[$index['most'][0]];
+		$least = $description->description[$index['least'][0]];
+		$change = $description->description[$index['change'][0]];
+        
+        // PDF
+        $pdf = PDF::loadview('admin/result/disc-2/pdf', [
+            'mostChartImage' => $request->mostChartImage,
+            'leastChartImage' => $request->leastChartImage,
+            'changeChartImage' => $request->changeChartImage,
+            'name' => $request->name,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'position' => $request->position,
+            'test' => $request->test,
+            'result' => $request->result,
+            'differenceArray' => $request->differenceArray,
+            'index' => $request->index,
+            'disc' => $disc,
+            'most' => $most,
+            'least' => $least,
+            'change' => $change,
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+        
+        return $pdf->stream($request->name . '_' . $request->test . '.pdf');
+    }
 }
