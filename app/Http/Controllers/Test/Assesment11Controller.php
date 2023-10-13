@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 
 class Assesment11Controller extends Controller
 {
-    public function cetak(Request $request)
+    public static function cetak(Request $request)
     {
         // Set the result
         $result = Result::find($request->id);
