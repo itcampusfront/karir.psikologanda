@@ -281,14 +281,14 @@ class ResultController extends \App\Http\Controllers\Controller
         elseif($request->path == 'assesment' || $request->path == 'assesment-01')
             return AssesmentController::print($request);
 		// Assesment 1.0
-        elseif($request->path == 'assesment-10')
-            return Assesment10Controller::print($request);
-        //-------
-        elseif($request->path == 'assesment-11')
+        elseif($request->path == 'assesment-10' || $request->path == 'assesment-11')
             return Assesment10Controller::print($request);
 		// Assesment 2.0
-        elseif($request->path == 'assesment-20' || $request->path == 'assesment-21')
+        elseif($request->path == 'assesment-20')
             return Assesment20Controller::print($request);
+        //
+        elseif($request->path == 'assesment-21')
+            return Assesment20Controller::cetak($request);
         // Papikostick
         elseif($request->path == 'papikostick' || $request->path == 'papikostick-1')
             return PapikostickController::print($request);
