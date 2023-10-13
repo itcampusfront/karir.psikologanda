@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Result;
 use App\Models\Description;
 
-class Assesment11Controller extends Controller
+class Assesment11Controller extends \App\Http\Controllers\Controller
 {
     public static function cetak(Request $request)
     {
