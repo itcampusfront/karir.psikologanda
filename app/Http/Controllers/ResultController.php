@@ -4,23 +4,24 @@ namespace App\Http\Controllers;
 
 use Auth;
 use DataTables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Result;
-use App\Models\Company;
 use App\Models\Test;
 use App\Models\User;
+use App\Models\Result;
+use App\Models\Company;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Test\ISTController;
+use App\Http\Controllers\Test\SDIController;
+use App\Http\Controllers\Test\MSDTController;
+use App\Http\Controllers\Test\RMIBController;
 use App\Http\Controllers\Test\DISC1Controller;
 use App\Http\Controllers\Test\DISC2Controller;
-use App\Http\Controllers\Test\ISTController;
-use App\Http\Controllers\Test\MSDTController;
-use App\Http\Controllers\Test\AssesmentController;
 use App\Http\Controllers\Assesment10Controller;
+use App\Http\Controllers\Test\AssesmentController;
+use App\Http\Controllers\Test\Assesment11Controller;
 use App\Http\Controllers\Test\Assesment20Controller;
 use App\Http\Controllers\Test\PapikostickController;
-use App\Http\Controllers\Test\SDIController;
-use App\Http\Controllers\Test\RMIBController;
 
 class ResultController extends \App\Http\Controllers\Controller
 {
@@ -294,7 +295,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return Assesment10Controller::print($request);
         //--
         elseif($request->path == 'assesment-11')
-            return Assesment10Controller::cetak($request);
+            return Assesment11Controller::cetak($request);
 		// Assesment 2.0
         elseif($request->path == 'assesment-20')
             return Assesment20Controller::print($request);
