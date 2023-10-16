@@ -69,6 +69,7 @@ class TestController extends \App\Http\Controllers\Controller
             // Save the test
             $test = new Test;
             $test->name = $request->name;
+            $test->num_order = 0;
             $test->code = $code;
             $test->save();
 

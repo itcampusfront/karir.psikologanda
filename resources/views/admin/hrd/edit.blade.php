@@ -167,6 +167,21 @@
                             <a href="{{ route('admin.hrd.index') }}" class="btn btn-sm btn-secondary"><i class="bi-arrow-left me-1"></i> Kembali</a>
                         </div>
                     </div>
+                    @if(Auth::user()->role->is_global == 1)
+                    <div class="notif">
+                        <table class="table table-borderless table-responsive">
+                            <tbody style="color: red">
+                              <tr>
+                                <td> 
+                                    <p>
+                                        NB: <br> *Versi x.1 adalah versi menampilkan soal satu-persatu
+                                    </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                    @endif
                 </form>
             </div>
         </div>
