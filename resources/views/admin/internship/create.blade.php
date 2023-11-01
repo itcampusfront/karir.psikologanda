@@ -202,25 +202,44 @@
 <script type="text/javascript">
     // Datepicker
     Spandiv.DatePicker("input[name=birthdate]");
-
+    var admin = "{{ Auth::user()->role->is_global === 1 }}";
+    var hrd = "{{ Auth::user()->role_id === 2 }}";
     // Change company
-    $(document).on("change", "select[name=company]", function() {
-        var company = $(this).val();
+    if(admin){
+            $(document).on("change", "select[name=company]", function() {
+            var company = $(this).val();
+            $.ajax({
+                type: "get",
+                url: "{{ route('admin.internship.getVacan') }}",
+                data: {company: company},
+                success: function(response) {
+                    var html = '';
+                    html += '<option value="" disabled selected>--Pilih--</option>';
+                    for(i=0; i<response.length; i++) {
+                        html += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                    }
+                    $("select[name=vacancy]").removeAttr("disabled").html(html);
+                    
+                }
+            });
+        });
+    }
+
+    if(hrd){
         $.ajax({
-            type: "get",
-            url: "{{ route('admin.internship.getVacan') }}",
-            data: {company: company},
-            success: function(response) {
+            type:"get",
+            url:"{{ route('admin.internship.getVacan') }}",
+            success:function(response){
                 var html = '';
                 html += '<option value="" disabled selected>--Pilih--</option>';
-                for(i=0; i<response.length; i++) {
-                    html += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
-                }
-                $("select[name=vacancy]").removeAttr("disabled").html(html);
-                
+                    for(i=0; i<response.length; i++) {
+                        html += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                    }
+                    $("select[name=vacancy]").removeAttr("disabled").html(html);
             }
-        });
-    });
+        })
+    }
+    
 
     
 </script>

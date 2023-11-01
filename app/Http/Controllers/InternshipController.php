@@ -185,20 +185,35 @@ class InternshipController extends Controller
     }
     public function getVacan(Request $request)
     {
-        if ($request->ajax()) {
-            $company = $request->company;
-            if ($company) {
-                $vacancies = Vacancy::with('position', 'company')
-                    ->has('position')
-                    ->whereHas('company', function ($query) use ($company) {
-                        return $query->where('company_id', $company);
-                    })
-                    ->where('status', 1)
-                    ->orderBy('name', 'asc')
-                    ->get();
-            } else {
-                $vacancies = [];
+        if(Auth::user()->role->is_global === 1){
+            if ($request->ajax()) {
+                $company = $request->company;
+                if ($company) {
+                    $vacancies = Vacancy::with('position', 'company')
+                        ->has('position')
+                        ->whereHas('company', function ($query) use ($company) {
+                            return $query->where('company_id', $company);
+                        })
+                        ->where('status', 1)
+                        ->orderBy('name', 'asc')
+                        ->get();
+                } else {
+                    $vacancies = [];
+                }
+                return response()->json($vacancies);
             }
+        }
+        if(Auth::user()->role_id === 2){
+            $company_id = Auth::user()->company->id;
+            $vacancies = Vacancy::with('position','company')
+                        ->has('position')
+                        ->whereHas('company', function($query) use ($company_id){
+                            return $query->where('company_id', $company_id);
+                        })
+                        ->where('status',1)
+                        ->orderBy('name','asc')
+                        ->get();
+            
             return response()->json($vacancies);
         }
     }
