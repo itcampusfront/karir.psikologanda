@@ -10,6 +10,7 @@ use App\Models\Selection;
 use App\Models\UserSocmed;
 use App\Models\UserGuardian;
 use Illuminate\Http\Request;
+use App\Exports\InternExport;
 use App\Models\UserAttribute;
 use App\Exports\ApplicantExport;
 use Yajra\DataTables\DataTables;
@@ -492,24 +493,31 @@ class InternshipController extends Controller
             if ($company) {
                 $internships = User::whereHas('attribute', function (Builder $query) use ($company) {
                     return $query->has('company')->where('company_id', '=', $company->id);
-                })->where('role_id', '=', role('internship'))->get();
+                })->where('role_id', '=', role('internship'))->orderBy('id', 'desc')->get();
+                // $internships = User::select('role_id')->where('role_id','=',6)->get();
+
             } else {
                 $internships = User::whereHas('attribute', function (Builder $query) {
                     return $query->has('company');
-                })->where('role_id', '=', role('internship'))->get();
+                })->where('role_id', '=', role('internship'))->orderBy('id', 'desc')->get();
+                // $internships = User::select('role_id')->where('role_id','=',6)->get();
+
             }
         } elseif (Auth::user()->role->is_global === 0) {
             $company = Company::find(Auth::user()->attribute->company_id);
             $internships = User::whereHas('attribute', function (Builder $query) use ($company) {
                 return $query->has('company')->where('company_id', '=', $company->id);
-            })->where('role_id', '=', role('internship'))->get();
+            })->where('role_id', '=', role('internship'))->orderBy('id', 'desc')->get();
+
         }
 
+
+        
         // Set filename
         $filename = $company ? 'Data Magang ' . $company->name . ' (' . date('Y-m-d-H-i-s') . ')' : 'Data Semua Magang (' . date('d-m-Y-H-i-s') . ')';
 
         // Return
-        return Excel::download(new ApplicantExport($internships), $filename . '.xlsx');
+        return Excel::download(new InternExport($internships), $filename . '.xlsx');
 
         if (Auth::user()->role->is_global === 1) {
             // Get the HRD
@@ -521,7 +529,7 @@ class InternshipController extends Controller
             // File name
             $filename = $hrd ? 'Data Magang ' . $hrd->perusahaan . ' (' . date('Y-m-d-H-i-s') . ')' : 'Data Semua Magang (' . date('d-m-Y-H-i-s') . ')';
 
-            return Excel::download(new PelamarExport($internships), $filename . '.xlsx');
+            return Excel::download(new InternExport($internships), $filename . '.xlsx');
         } elseif (Auth::user()->role->is_global === 0) {
             // Get the HRD
             $hrd = HRD::where('id_user', '=', Auth::user()->id)->first();
@@ -532,7 +540,7 @@ class InternshipController extends Controller
             // File name
             $filename = 'Data Magang ' . $hrd->perusahaan . ' (' . date('Y-m-d-H-i-s') . ')';
 
-            return Excel::download(new PelamarExport($internships), $filename . '.xlsx');
+            return Excel::download(new InternExport($internships), $filename . '.xlsx');
         }
     }
 }
