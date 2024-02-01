@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Test\ISTController;
 use App\Http\Controllers\Test\SDIController;
+use App\Http\Controllers\Test\MBTIController;
 use App\Http\Controllers\Test\MSDTController;
 use App\Http\Controllers\Test\RMIBController;
 use App\Http\Controllers\Test\DISC1Controller;
@@ -229,6 +230,8 @@ class ResultController extends \App\Http\Controllers\Controller
         // RMIB 2.0
         elseif($result->test->code == 'rmib-2')
             return RMIBController::detail($result);
+        elseif($result->test->code == 'mbti')
+            return MBTIController::detail($result);
     }
 
     /**
