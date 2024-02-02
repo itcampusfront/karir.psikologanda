@@ -87,7 +87,7 @@
                                 @endfor
                             </ul>
                         </div>
-                        @if($result_mbti[5] != null)
+                        @if(isset($result_mbti[5]) != false)
                         <div class="preferensi mb-4">
                             <h3 class="fw-bold">Pendukung</h4>
                             <ul>
