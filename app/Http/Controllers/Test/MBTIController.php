@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Test;
 
-use App\Http\Controllers\Controller;
+use PDF;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MBTIController extends Controller
 {
@@ -27,6 +28,34 @@ class MBTIController extends Controller
         ]);
     }
 
+    public static function print(Request $request)
+    {
+        if($request->pendukung !=null){
+            $pendukung1 = $request->pendukung;
+        }else{
+            $pendukung1 = null;
+        }
+
+        $pdf = PDF::loadview('admin/result/mbti/pdf', [
+            'test' => 'MBTI',
+            'tipe' => $request->tipe,
+            'name'=> $request->name,
+            'kepanjangan'=> $request->kepanjangan,
+            'penjelasan' =>$request->penjelasan,
+            'preferensi' =>json_decode($request->preferensi,true),
+            'lingkungan' =>json_decode($request->lingkungan,true),
+            'keseimbangan' =>json_decode($request->keseimbangan,true),
+            'pendukung' => json_decode($pendukung1,true),
+            'penilaian1' => json_decode($request->penilaian1,true),
+            'penilaian10' => $request->penilaian10,
+            'penilaian2' => json_decode($request->penilaian2,true),
+            'penilaian20' => $request->penilaian20,
+        ]);
+        $pdf->setPaper('A4', 'portrait');
+        
+        return $pdf->stream('MBTI.pdf');
+    }
+
     public static function resultMBTI($psikologi){
         $result_psikolog = array();
         $preferensi = array();
@@ -34,10 +63,15 @@ class MBTIController extends Controller
         $keseimbangan = array();
         $pendukung = array();
         if($psikologi == 'ENFJ'){
-            $cek_preferensi = ["Tindakan eksekutif dan perencanaan jangka panjang","Bersifat logis, analitis, dan kritis secara obyektif","Bersandar pada pemikiran","Fokus pada gagasan, bukan orang di balik gagasan",
-                                "Berpikir lebih dulu, mengatur perencanaan, situasi, dan operasi yang berhubungan dengan suatu proyek","Membuat usaha sistematis untuk mencapai sasaran pribadi dengan waktunya",
-                                "Kurang kesabaran terhadap situasi kebingungan atau ketidakefisienan","Kepercayaan bahwa perilaku harus dikendalikan oleh logika",
-                                "Hidup dengan serangkaian aturan yang tertentu yang merangkum penilaian dasar dengan lingkungannya","Memandang apa yang tidak logis dan tidak konsisten"];
+            $cek_preferensi = ["Tindakan eksekutif dan perencanaan jangka panjang","Bersifat logis, analitis, dan kritis secara obyektif",
+                                "Bersandar pada pemikiran",
+                                "Fokus pada gagasan, bukan orang di balik gagasan",
+                                "Berpikir lebih dulu, mengatur perencanaan, situasi, dan operasi yang berhubungan dengan suatu proyek",
+                                "Membuat usaha sistematis untuk mencapai sasaran pribadi dengan waktunya",
+                                "Kurang kesabaran terhadap situasi kebingungan atau ketidakefisienan",
+                                "Kepercayaan bahwa perilaku harus dikendalikan oleh logika",
+                                "Hidup dengan serangkaian aturan yang tertentu yang merangkum penilaian dasar dengan lingkungannya",
+                                "Memandang apa yang tidak logis dan tidak konsisten"];
             
             for($i=0;$i<10;$i++){
                 $preferensi[$i] = $cek_preferensi[$i];
@@ -52,10 +86,15 @@ class MBTIController extends Controller
                 $lingkungan[$i] = $cek_lingkungan[$i];
             }
 
-            $cek_keseimbangan = ["Memiliki orang-orang pendukung untuk memperhatikan hal-hal detil tertentu","Memiliki orang-orang pendukung di sekitarnya dengan akal sehat untuk mengemukakan fakta-fakta yang luput dari perhatian",
-                        "Sepenuhnya menguji suatu situasi sebelum mengambil suatu keputusan","Berhenti dan mendengarkan sudut pandang orang-orang lain",
-                        "Berusaha memperhatikan nilai-nilai PERASAAN","Mengembangkan seni menghargai gagasan dan prestasi orang-orang lain","Belajar mengemukakan apa yang disukai, bukan sekedar apa yang perlu dikoreksi",
-                        "Memiliki lebih banyak waktu-waktu ekstrovert dibandingkan waktu-waktu introvert","Pekerjaan yang memungkinkan ybs merencanakan gambaran besar."
+            $cek_keseimbangan = ["Memiliki orang-orang pendukung untuk memperhatikan hal-hal detil tertentu",
+            "Memiliki orang-orang pendukung di sekitarnya dengan akal sehat untuk mengemukakan fakta-fakta yang luput dari perhatian",
+                        "Sepenuhnya menguji suatu situasi sebelum mengambil suatu keputusan",
+                        "Berhenti dan mendengarkan sudut pandang orang-orang lain",
+                        "Berusaha memperhatikan nilai-nilai PERASAAN",
+                        "Mengembangkan seni menghargai gagasan dan prestasi orang-orang lain",
+                        "Belajar mengemukakan apa yang disukai, bukan sekedar apa yang perlu dikoreksi",
+                        "Memiliki lebih banyak waktu-waktu ekstrovert dibandingkan waktu-waktu introvert",
+                        "Pekerjaan yang memungkinkan ybs merencanakan gambaran besar."
             ];
 
             for($i=0;$i<9;$i++){
@@ -69,14 +108,21 @@ class MBTIController extends Controller
             $result_psikolog[4] = $keseimbangan;
         }
         if($psikologi == 'ENFP'){
-            $cek_preferensi = ["Mencari kemungkinan-kemungkinan dan cara-cara baru melakukan berbagai hal","Memecahkan masalah-masalah sulit dengan cara-cara yang sederhana",
-                        "Mengubah proyek dan peluang-peluang baru demi kreativitas","Kesempatan untuk mengembangkan dan mengilhami potensi dalam diri orang-orang lain",
-                        "Membangkitkan semangat","Menciptakan lingkungan yang penuh semangat dan motivasi","Mengkaji hal-hal, sementara terus mempertimbangkan pemecahannya"
+            $cek_preferensi = ["Mencari kemungkinan-kemungkinan dan cara-cara baru melakukan berbagai hal",
+            "Memecahkan masalah-masalah sulit dengan cara-cara yang sederhana",
+                        "Mengubah proyek dan peluang-peluang baru demi kreativitas",
+                        "Kesempatan untuk mengembangkan dan mengilhami potensi dalam diri orang-orang lain",
+                        "Membangkitkan semangat",
+                        "Menciptakan lingkungan yang penuh semangat dan motivasi",
+                        "Mengkaji hal-hal, sementara terus mempertimbangkan pemecahannya"
             ];
-            for($i=0;$i<8;$i++){$preferensi[$i] = $cek_preferensi[$i];}
+            for($i=0;$i<7;$i++){$preferensi[$i] = $cek_preferensi[$i];}
 
-            $cek_lingkungan = ["Kebebasan untuk berinovasi dengan proyek-proyek baru","Mengejar minat-minat diri yang berubah-ubah","Dapat memperoleh penghargaan atas kemampuan diri",
-                "Kebebasan dari kendali dan hal-hal detil","Mengejar dan menasihati mengenai peluang-peluang"
+            $cek_lingkungan = ["Kebebasan untuk berinovasi dengan proyek-proyek baru",
+            "Mengejar minat-minat diri yang berubah-ubah",
+            "Dapat memperoleh penghargaan atas kemampuan diri",
+                "Kebebasan dari kendali dan hal-hal detil",
+                "Mengejar dan menasihati mengenai peluang-peluang"
             ];
 
             for($i=0;$i<5;$i++){$lingkungan[$i] = $cek_lingkungan[$i];}
@@ -590,7 +636,7 @@ class MBTIController extends Controller
             $result_psikolog[4] = $keseimbangan;
         }
         if($psikologi == 'ISFP'){
-            $result_psikolog[0]="<>Introverted Sensing Feeling Perceiving";
+            $result_psikolog[0]="Introverted Sensing Feeling Perceiving";
             $result_psikolog[1]="Sebagai IFSP <xxx> menunjukkan ketenangan, pendiam, ramah dan sensitif. Ia menikmati situasi yang ada, apa yang terjadi di sekitarnya. Ia senang mendapatkan apa yang ada di lingkungannya sendiri dan bekerja dengan jadwal dibuat. Ia mudah dipercaya dan berkomitmen dengan nilai-nilai dan orang yang dianggap penting. Tidak menyukai ketidaksetujuan dan konflik, dan tidak memaksa pendapat atau nilai kepada orang lain.";
             $cek_preferensi = [
                 "Menilai hidup dengan impian ideal batiniah dan nilai-nilai pribadi",
@@ -633,7 +679,7 @@ class MBTIController extends Controller
             
         }
         if($psikologi == 'ISTJ'){
-            $result_psikolog[0]="<>Introverted Sensing Thinking Judging";
+            $result_psikolog[0]="Introverted Sensing Thinking Judging";
             $result_psikolog[1]="Ia pendiam, tenang, serius dan mendapatkan keberhasilan dari ketekuan dan kehati-hatiannya. Ia dapat diandalkan, praktis, berdasarkan fakta yang ada, realistis dan bertanggung jawab. Keputusan yang diambil logis dengan apa yang harus dikerjakannya secara tegas dan jelas, menghindari kekacauan yang mungkin terjadi. Ia menyenangi segala hal secara teratur dan terorganisasi dengan baik, baik kehidupan pribadi, rumah tangga maupun pekerjaan. Ia berpegang pada nilai tradisi dan kepercayaan.";
             $cek_preferensi = [
                 "Dapat diandalkan, akurat",
@@ -669,7 +715,7 @@ class MBTIController extends Controller
             $result_psikolog[4] = $keseimbangan;
         }
         if($psikologi == 'ISTP'){
-            $result_psikolog[0]="<>Introverted Sensing Thinking Perceiving";
+            $result_psikolog[0]="Introverted Sensing Thinking Perceiving";
             $result_psikolog[1]="Sebagai ISTP, <xxx> toleran dan fleksibel, tenang dalam mengamati sampai permasalahan jelas, kemudian bertindak cepat untuk mendapatkan solusi praktis. Ia melakukan analisa terhadap apa yang bisa dikerjakan dengan membatasi pada data-data dan inti masalah. Ia tertarik dengan sebab akibat, mengatur fakta menggunakan prinsip logis, nilai dan efisiensi.";
             $cek_preferensi = [
                 "Logis, analitis dan kritis secara obyektif",

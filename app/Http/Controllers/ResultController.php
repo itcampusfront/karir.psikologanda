@@ -320,5 +320,7 @@ class ResultController extends \App\Http\Controllers\Controller
         // RMIB 2.0
         elseif($request->path == 'rmib-2')
             return RMIBController::print($request);
+        elseif($request->path == 'mbti')
+            return MBTIController::print($request);
     }
 }

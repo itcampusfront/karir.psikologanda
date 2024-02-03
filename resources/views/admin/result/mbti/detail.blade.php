@@ -71,7 +71,7 @@
                                 @endfor
                             </ul>
                         </div>
-                        <div class="preferensi mb-4">
+                        <div class="lingkungan mb-4">
                             <h3 class="fw-bold">Lingkungan</h4>
                             <ul>
                                 @for($i=0;$i<count($result_mbti[3]);$i++)
@@ -79,7 +79,7 @@
                                 @endfor
                             </ul>
                         </div>
-                        <div class="preferensi mb-4">
+                        <div class="keseimbangan mb-4">
                             <h3 class="fw-bold">Keseimbangan</h4>
                             <ul>
                                 @for($i=0;$i<count($result_mbti[4]);$i++)
@@ -88,7 +88,7 @@
                             </ul>
                         </div>
                         @if(isset($result_mbti[5]) != false)
-                        <div class="preferensi mb-4">
+                        <div class="pendukung mb-4">
                             <h3 class="fw-bold">Pendukung</h4>
                             <ul>
                                 @for($i=0;$i<count($result_mbti[5]);$i++)
@@ -142,16 +142,26 @@
     </div>
 </div>
 
-{{-- <form id="form-print" class="d-none" method="post" action="{{ route('admin.result.print') }}" target="_blank">
+<form id="form-print" class="d-none" method="post" action="{{ route('admin.result.print') }}" target="_blank">
     @csrf
     <input type="hidden" name="id" value="{{ $result->id }}">
-    <input type="hidden" name="name" value="{{ $result->user->name }}">
-    <input type="hidden" name="age" value="{{ generate_age($result->user->attribute->birthdate, $result->created_at).' tahun' }}">
-    <input type="hidden" name="gender" value="{{ gender($result->user->attribute->gender) }}">
-    <input type="hidden" name="position" value="{{ $result->user->attribute->position->name }}">
-    <input type="hidden" name="test" value="{{ $result->test->name }}">
     <input type="hidden" name="path" value="{{ $result->test->code }}">
-</form> --}}
+    <input type="hidden" name="name" value="{{ $result->user->name }}">
+    <input type="hidden" name="tipe" value="{{ $result->result[1][2] }}">
+    <input type="hidden" name="kepanjangan" value="{{ $result_mbti[0] }}">
+    <input type="hidden" name="penjelasan" value="{{ $result_mbti[1] }}">
+    <input type="hidden" name="preferensi" value="{{ json_encode($result_mbti[2]) }}">
+    <input type="hidden" name="lingkungan" value="{{ json_encode($result_mbti[3]) }}">
+    <input type="hidden" name="keseimbangan" value="{{ json_encode($result_mbti[4]) }}">
+    @if(isset($result_mbti[5]) != false)
+    <input type="hidden" name="pendukung" value="{{ json_encode($result_mbti[5]) }}">
+    @endif
+    <input type="hidden" name="penilaian1" value="{{ json_encode($result_p1[1]) }}">
+    <input type="hidden" name="penilaian10" value="{{ $result_p1[0] }}">
+    <input type="hidden" name="penilaian2" value="{{ json_encode($result_p2[1]) }}">
+    <input type="hidden" name="penilaian20" value="{{ $result_p2[0] }}">
+    
+</form>
 
 @endsection
 
