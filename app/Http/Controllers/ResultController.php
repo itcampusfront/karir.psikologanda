@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Test\ISTController;
 use App\Http\Controllers\Test\SDIController;
+use App\Http\Controllers\Test\TIUController;
 use App\Http\Controllers\Test\MBTIController;
 use App\Http\Controllers\Test\MSDTController;
 use App\Http\Controllers\Test\RMIBController;
@@ -232,6 +233,8 @@ class ResultController extends \App\Http\Controllers\Controller
             return RMIBController::detail($result);
         elseif($result->test->code == 'mbti')
             return MBTIController::detail($result);
+        elseif($result->test->code == 'tiu')
+            return TIUController::detail($result);
     }
 
     /**
