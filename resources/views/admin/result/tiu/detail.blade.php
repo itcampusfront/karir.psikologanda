@@ -59,13 +59,49 @@
                 <div class="tab-content p-2" id="myTabContent">
                     <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                         <p class="h4 text-center fw-bold mb-5">Nama Tes: {{ $result->test->name }}</p>
-                        
+                        <table class="table table-responsive w-auto">
+                            <tbody>
+                              <tr>
+                                <td class="text-start"><strong>Score jumlah benar</strong> </td>
+                                <td class="text-start"> : </td>
+                                <td class="text-start"> {{ $result->result['rs'] }} </td>
+                              </tr>
+                              <tr>
+                                <td class="text-start"><strong>Standart Score</strong></td>
+                                <td class="text-start"> : </td>
+                                <td class="text-start"> {{ $result->result['rs'] }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <br>
+                          <table class="table table-responsive w-auto ">
+                            <tbody>
+                              <tr>
+                                <td class="text-start"><strong>Standart Score</strong></td>
+                                <td class="text-start"> 24-30 </td>
+                                <td class="text-start"> 18-23 </td>
+                                <td class="text-start"> 12-17 </td>
+                                <td class="text-start"> 6-11 </td>
+                                <td class="text-start"> 1-5 </td>
+                                <td class="text-start"> 0 </td>
+                              </tr>
+                              <tr>
+                                <td class="text-start"><strong>Kategori</strong></td>
+                                <td class="text-start"> B </td>
+                                <td class="text-start"> AB </td>
+                                <td class="text-start"> C </td>
+                                <td class="text-start"> AK </td>
+                                <td class="text-start"> K </td>
+                                <td class="text-start"> KS </td>
+                              </tr>
+                            </tbody>
+                        </table>
                     </div>
                     
                     <div class="tab-pane fade" id="answer" role="tabpanel" aria-labelledby="answer-tab">
                         <div class="row">
-                            {{-- {{ count($result->result['jawaban']) }} --}}
-                            @for($i=1; $i<=5; $i++)
+                            {{-- {{ dd($result->result['jawaban']) }} --}}
+                            @for($i=1; $i<=3; $i++)
                             <div class="col-md-3 col-6 mb-2 mb-md-0">
                                 <table class="table-bordered">
                                     <thead bgcolor="#bebebe">
@@ -75,9 +111,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for($j=1; $j<=10; $j++)
+                                        @for($j=(($i-1)*10)+1; $j<=($i*10); $j++)
                                         <tr>
-                                            <td>1</td>
+                                            <td><strong>{{ $j }}</strong></td>
+                                            <td>{{ $result->result['jawaban'][$j] }}</td>
                                             {{-- <td align="center" bgcolor="#bebebe"><strong>{{ $j }}</strong></td> --}}
                                             {{-- <td align="center" bgcolor="#eeeeee">{{ $result->result['answers'][$j] }}</td> --}}
                                         </tr>
@@ -95,7 +132,7 @@
     </div>
 </div>
 
-{{-- <form id="form-print" class="d-none" method="post" action="{{ route('admin.result.print') }}" target="_blank">
+<form id="form-print" class="d-none" method="post" action="{{ route('admin.result.print') }}" target="_blank">
     @csrf
     <input type="hidden" name="id" value="{{ $result->id }}">
     <input type="hidden" name="name" value="{{ $result->user->name }}">
@@ -104,7 +141,7 @@
     <input type="hidden" name="position" value="{{ $result->user->attribute->position->name }}">
     <input type="hidden" name="test" value="{{ $result->test->name }}">
     <input type="hidden" name="path" value="{{ $result->test->code }}">
-</form> --}}
+</form>
 
 @endsection
 

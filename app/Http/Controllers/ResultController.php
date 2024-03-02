@@ -325,5 +325,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return RMIBController::print($request);
         elseif($request->path == 'mbti')
             return MBTIController::print($request);
+        elseif($request->path == 'tiu')
+            return TIUController::print($request);
     }
 }
