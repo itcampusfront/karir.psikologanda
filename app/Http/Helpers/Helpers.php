@@ -5,6 +5,64 @@ use App\Models\HRD;
 use App\Models\TesSettings;
 use App\Models\Company;
 
+
+if(!function_exists('convertEPPS')){
+    function convertEPPS($ceks)
+    {
+        $achtt="Subjek melakukan tindakan terbaik untuk dapat menyelesaikan tiap tugas yang diberikan dengan menggunakan usaha pikiran dan kemampuannya, agar dapat dipandang dapat menyelesaikan pekerjaan sulit oleh atasan. Ia tertarik untuk menyelesaikan tugas menantang dan permasalahan rumit lebih baik dari orang lain.";
+        $deftt="Subjek mudah terpengaruh dengan keadaan orang lain, memiliki ketertarikan tinggi mengenai kesuksesan orang lain. Ia mudah diberi instruksi dan dapat mengikuti atau memberikan apa yang diinginkan orang lain. Ia senang menunjukkan pekerjaan yang telah diselesaikan, dapat dengan mudah mengikuti petunjuk atasan. Ia cenderung mengandalkan orang lain dalam mengambil keputusan dan tindakan konformitasnya tinggi. Ia berperilaku sesuai norma yang ada dalam lingkungannya dengan menghindari cara-cara atau tindakan yang tidak wajar.";
+        $ordtt="Subjek bekerja dengan sifat keteraturan yang tinggi dan terorganisir secara rapi. Demikian pula dalam melakukan perencanaan sebelum memulai aktivitas dilakukan secara rapi dan detail. Ia bertindak sesuai keteraturan dan prosedur, detail dalam bekerja dan berusaha segala sesuatu sesuai kebiasaan dan terstruktur berdasarkan petunjuk yang ada. Ia sangat teratur bukan hanya bekerja namun pada perilaku-perilaku umum lainnya sehingga tampak dirinya beraktivitas monoton dengan ketidaktertarikan pada perubahan. Ia kurang dapat bertindak fleksibel.";
+        $exhtt="Subjek senang memamerkan diri di lingkungan sosial. Ia senang menjadi perhatian orang lain, terbuka dan mudah bergaul, senang bercerita mengenai pengalaman atau cerita-cerita yang menarik dirinya. Ia bangga dengan dirinya sendiri, berusaha menunjukkan kepintarannya kepada orang lain. Ia senang apabila orang lain tidak dapat menjawab pertanyaan yang diajukannya dan seringkali menggunakan istilah-istilah asing yang kurang dimengerti oleh orang lain agar tampak pintar.";
+        $auttt="Subjek mudah bertindak atau bersikap sesuai keinginannya tanpa banyak hambatan. Ia tidak tergantung dengan orang lain dan mudah mengambil keputusan. Ia kurang mempertimbangkan lingkungan atau orang lain dalam melakukan sesuatu, mudah bersikap atau beraktivitas terhadap hal-hal yang tidak lazim bagi orang lain dan cenderung menghindari situasi-situasi yang menuntut dirinya menyesuaikan dengan lingkungannya. Ia mudah mengkritisi atasan atau otoritas yang ada dan cenderung menghindar dari rutinitas dan tanggung jawab.";
+        $afftt="Subjek loyal terhadap orang lain dan dapat berpartisipasi dengan baik dalam kelompok. Ia mudah melakukan aktivitas untuk orang lain, berinteraksi dengan orang baru dan mencari komunitas baru. Ia terbuka dengan lingkungan sosial, mampu mengungkapkan perasaan sesungguhnya dan lebih senang beraktivitas bersama daripada sendiri. Hubungan sosial yang dijalin erat.";
+        $inttt="Subjek senang berintrospeksi dengan diri dan perasaannya. Ia senang mengamati tindakan orang lain, mencermati terhadap perilaku-perilaku yang dilakukan dan berusaha mengerti bagaimana perasaan orang lain apabila menghadapi suatu masalah. Ia seringkali menilai orang lain terhadap alasan-alasan atau dasar dari motivasi tindakan daripada apa yang mereka kerjakan. Ia senang menganalisa motivasi atau tindakan orang lain dan tertarik dengan prediksi terhadap bagaimana orang lain akan bertindak.";
+        $suctt="Subjek cenderung menggantungkan dirinya kepada orang lain. Ia berusaha mencari dorongan diri dari pihak lain dan meminta bantuan apabila berhadapan dengan masalah. Ia sangat terbuka dengan masalahnya, mencari simpati dan berusaha mendapatkan pemahaman dari orang lain tentang masalahnya. Ia berusaha mendapatkan afeksi dan keramahan dari orang lain, senang dengan simpati atau perhatian yang diterimanya.";
+        $domtt="Subjek mampu memberikan argumentasi pandangannya kepada orang lain dengan mudah. Ia ingin dianggap atau dipandang sebagai pemimpin atau ketua dalam kelompok. Ia mampu dengan mudah membuat keputusan berkaitan dengan permasalahan kelompok, mampu mempengaruhi keinginan dirinya kepada orang lain dan dapat melerai konflik dengan mudah. Ia senang memberikan petunjuk dan cara-cara melakukan pekerjaan.";
+        $abatt="Subjek mudah merasa bersalah terhadap hal-hal yang dianggapnya tidak sesuai dan mudah menerima kesalahan dari orang lain. Ia menggangap sakit hati atau kesengsaraan diri lebih baik daripada kekerasan yang mungkin timbul. Ia merasa terlalu bersalah sehingga layak untuk dihukum. Ia kurang mampu berargumentasi atau mempertahankan pendapat. Pada situasi konflik ia cenderung diam dan cenderung menerima terhadap tuntutan yang ada. Ia menghindari konfrontasi dan akan merasa tertekan apabila tidak dapat menangani permasalahan. Ia merasa cemas terhadap tekanan yang ada. Ia merasa inferior dalam lingkungan sosial, apatis dalam pergaulan formal maupun non formal.";
+        $nurtt="Subjek terbuka dan memiliki perhatian dengan orang lain. Ia senang membantu terhadap orang-orang yang mengalami permasalahan, cepat dalam memberikan bantuan tanpa adanya keinginan mendapatkan balasan. Ia santun dan memiliki simpati kepada orang lain, mudah memaafkan dan peka dalam memberikan perhatian, afeksi atau hubungan interpersonal yang dibutuhkan mereka. Hubungan sosial dapat dilakukan dengan mudah. Ia terbuka, mudah bergaul dan ramah kepada orang lain. Perilaku sosialnyalus.";
+        $chgtt="Subjek tertarik dengan situasi-situasi baru, lingkungan maupun orang-orang baru. Rutinitas keseharian dilakukannya dengan cara melakukan sesuatu yang baru atau bereksperimen. Ia kurang betah terhadap rutinitas yang ada dan sulit untuk bertahan pada situasi yang monoton. Ia berusaha melakukan pekerjaan-pekerjaan dengan cara baru, berpindah tempat dengan situasi baru yang dianggapnya menantang. Pada rutinitas keseharian terlihat dengan seringkali mencari tempat makan baru atau mengikuti trend-trend sesuai dengan ketertarikan dirinya.";
+        $endtt="Subjek memiliki tanggung jawab tinggi terhadap pekerjaan, senang menyelesaikan tugas sampai selesai dan bekerja keras terhadap tugas atau permasalahan yang dihadapi. Ia berusaha mendapatkan solusi terhadap permasalahan yang ada dan seringkali bekerja dengan waktu lebih untuk dapat menyelesaikan tugas. Ia tekun terhadap pekerjaan, tidak mudah jenuh terhadap pekerjaan dan mampu bertahan terhadap permasalahan rumit yang bagi orang lain dianggap terlalu menjenuhkan. Ia cenderung tidak senang apabila proses pekerjaannya diggu.";
+        $hettt="Subjek tertarik bergaul dengan lawan jenis. Dalam beraktivitas sosial, ia memilih lawan jenis untuk mendapatkan perhatian dan afeksi dari mereka. Ia memiliki ketertarikan fisik yang tinggi dengan lawan jenis, memiliki dorongan seksual yang tinggi dengan menyenangi atribut-atribut seksualitas seperti buku, film dan topik-topik lainnya yang menunjukkan kenikmatan seksual.";
+        $aggtt="Subjek memiliki dorongan agresi yang tinggi dan mudah terhadap konflik. Ia mudah berselisih paham atau memberi kritik terbuka dan seringkali mendapatkan kesenangan terhadap konfrontasi yang ada. Ia mudah marah terhadap situasi yang menjadikan dirinya tidak nyaman. Ia mudah menyalahkan orang lain dan memiliki ketertarikan kontak fisik yang tinggi dalam menyelesaikan permasalahan.";
+        $tt1="Subjek mudah terpengaruh dengan lingkungan atau keadaan dari orang lain, suka memamerkan keberhasilan pekerjaan dan dalam mengambil keputusan banyak menggantungkan kepada orang lain. Di sisi lain ia memiliki sikap ingin bebas dalam beraktivitas sesuai keinginan dirinya. Ia kurang bertanggung jawab terhadap akibat dari aktivitas yang dihasilkan dan tidak penurut. Tampak diriya mengalami konflik kepribadian. ";
+        $tt2="Subjek mudah bersosialisasi dengan lingkungan dan berinteraksi terbuka dengan orang lain. Otonomi yang tinggi menjadikan dirinya +berperilaku seenaknya sendiri tanpa memperhatikan norma atau aturan sosial yang berlaku. Hubungan yang terjalin tidak mendalam dan mudah berkonflik dengan orang lain. ";
+        $tt3="Subjek memiliki ketertarikan bersosialisasi namun peran yang dilakukannya pasif. Ia banyak berperan sebagai pengamat dan mencermati tingkah laku orang lain. Ia tergantung terhadap situasi sosial akan tetapi keterlibatan dalam kelompok tidak mendalam. ";
+        $tt4="Subjek memiliki konflik kepribadian. Di satu sisi ia sangat tergantung dengan orang lain untuk mencari dorongan terhadap pemecahan masalah yang dihadapi, namun di sisi lain ia memiliki penghindaran atau pertentangan terhadap norma atau aturan sosial yang ada. Ia kurang dapat bersikap terbuka dengan perasaannya, ia memiliki dorongan afeksi dan perhatian yang tinggi namun ia kurang mampu bersikap wajar dalam mengekspresikan perasaannya. ";
+        $tt5="Subjek memiliki konflik kepribadian. Ia memiliki keteraturan tinggi terhadap perencanaan dan aktivitas rutin akan tetapi ia juga cepat merasa bosan dengan situasi yang monoton. ";
+        $tt6="Subjek mudah merasa bersalah terhadap permasalahan yang muncul. Ia mudah menerima kesalahan dari orang lain untuk menghindari konfrontasi. Ia juga dengan mudah memberikan argumentasi terhadap pandangan yang dianggapnya benar. Dorongan untuk menguasai atau mempengaruhi orang lain tidak diperankan dengan memadai sehingga ia mudah menyerah terhadap konflik yang ada. Tampak ia memiliki konflik terhadap konsep dirinya. ";
+        $tt7="Subjek memiliki dorongan yang kuat untuk menyelesaikan suatu pekerjaan. Ia tekun dan tidak mudah jenuh terhadap permasalahan rumit yang dihadapi. Aktivitas penyelesaian tugas tidak disertai dengan dorongan untuk melakukan kinerja dengan lebih baik. Tampak dirinya sebagai penyelesai tugas namun tidak memiliki motivasi yang memadai untuk mencari tugas-tugas yang menantang. ";
+        $tt8="Subjek memiliki dorongan sosial tinggi, memiliki kepekaan dan simpati terhadap orang lain. Ia dengan mudah memberikan keinginan atau harapan kepada orang lain namun ia juga mudah konflik. Ia senang terhadap situasi konflik dan mudah menyalahkan orang lain. Tampak peran sosial yang dilakukannya manipulatif untuk kepentingan dirinya sendiri. ";
+    
+        $explanation = array();
+        if($ceks['achw'] > 75){ $explanation['Ach'] = $achtt;}
+        if($ceks['defw'] > 75){ $explanation['Def'] = $deftt;}
+        if($ceks['ordw'] > 75){ $explanation['Ord'] = $ordtt;}
+        if($ceks['exhw'] > 75){ $explanation['Exh'] = $exhtt;}
+        if($ceks['autw'] > 75){ $explanation['Aut'] = $auttt;}
+        if($ceks['affw'] > 75){ $explanation['Aff'] = $afftt;}
+        if($ceks['intw'] > 75){ $explanation['Int'] = $inttt;}
+        if($ceks['sucw'] > 75){ $explanation['Suc'] = $suctt;}
+        if($ceks['domw'] > 75){ $explanation['Dom'] = $domtt;}
+        if($ceks['abaw'] > 75){ $explanation['Aba'] = $abatt;}
+        if($ceks['nurw'] > 75){ $explanation['Nur'] = $nurtt;}
+        if($ceks['chgw'] > 75){ $explanation['Chg'] = $chgtt;}
+        if($ceks['endw'] > 75){ $explanation['End'] = $endtt;}
+        if($ceks['hetw'] > 75){ $explanation['Het'] = $hettt;}
+        if($ceks['aggw'] > 75){ $explanation['Agg'] = $aggtt;}
+
+
+        if (($ceks['defw']>60)&&($ceks['autw']>60))  $explanation['tt1'] = $tt1;
+        if (($ceks['autw']>60)&&($ceks['affw']>60))  $explanation['tt2'] = $tt2;
+        if (($ceks['intw']>60)&&($ceks['affw']>60))  $explanation['tt3'] = $tt3;
+        if (($ceks['sucw']>60)&&($ceks['autw']>60))  $explanation['tt4'] = $tt4;
+        if (($ceks['ordw']>60)&&($ceks['chgw']>60))  $explanation['tt5'] = $tt5;
+        if (($ceks['abaw']>60)&&($ceks['domw']>60))  $explanation['tt6'] = $tt6;
+        if (($ceks['endw']>60)&&($ceks['achw']<30))  $explanation['tt7'] = $tt7;
+        if (($ceks['nurw']>60)&&($ceks['aggw']>60))  $explanation['tt8'] = $tt8;
+        return $explanation;
+    }
+}
+
 // Subdomain Tes Psikologanda
 if(!function_exists('subdomain_tes')){
     function subdomain_tes(){
