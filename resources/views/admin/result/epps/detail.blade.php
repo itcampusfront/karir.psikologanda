@@ -117,6 +117,10 @@
     <input type="hidden" name="position" value="{{ $result->user->attribute->position->name }}">
     <input type="hidden" name="test" value="{{ $result->test->name }}">
     <input type="hidden" name="path" value="{{ $result->test->code }}">
+    <input type="hidden" name="test_id" value="{{ $result->test_id }}">
+    <input type="hidden" name="packet_id" value="{{ $result->packet_id }}">
+
+
 </form>
 
 @endsection

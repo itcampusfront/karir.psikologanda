@@ -330,5 +330,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return MBTIController::print($request);
         elseif($request->path == 'tiu')
             return TIUController::print($request);
+        elseif($request->path == 'epps')
+            return EPPSController::print($request);
     }
 }
