@@ -20,6 +20,7 @@ use App\Http\Controllers\Test\MSDTController;
 use App\Http\Controllers\Test\RMIBController;
 use App\Http\Controllers\Test\DISC1Controller;
 use App\Http\Controllers\Test\DISC2Controller;
+use App\Http\Controllers\Test\TIKITController;
 use App\Http\Controllers\Assesment10Controller;
 use App\Http\Controllers\Test\AssesmentController;
 use App\Http\Controllers\Test\Assesment11Controller;
@@ -238,6 +239,8 @@ class ResultController extends \App\Http\Controllers\Controller
             return TIUController::detail($result);
         elseif($result->test->code == 'epps')
             return EPPSController::detail($result);
+        elseif($result->test->code == 'tiki')
+            return TIKITController::detail($result);
     }
 
     /**
@@ -332,5 +335,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return TIUController::print($request);
         elseif($request->path == 'epps')
             return EPPSController::print($request);
+        elseif($request->path == 'tiki')
+            return TIKITController::print($request);
     }
 }

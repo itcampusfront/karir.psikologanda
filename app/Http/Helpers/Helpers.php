@@ -6,6 +6,62 @@ use App\Models\TesSettings;
 use App\Models\Company;
 
 
+if(!function_exists('convertOption')){
+    function convertOption($i, $value){
+        if($i == 2 || $i == 4 || $i == 8 || $i == 3){
+            if($value=='1'){ return "A";
+            }elseif($value=='2'){ return "B";
+            }elseif($value=='4'){ return "C";
+            }elseif($value=='8'){ return "D";
+            }elseif($value=='16'){ return "E";
+            }elseif($value=='32'){ return "F";
+            }elseif($value=='3'){ return "A B";
+            }elseif($value=='5'){ return "A C";            
+            }elseif($value=='9'){ return "A D";            
+            }elseif($value=='17'){ return "A E";             
+            }elseif($value=='33'){ return "A F";         
+            }elseif($value=='6'){ return "B C";           
+            }elseif($value=='10'){ return "B D";               
+            }elseif($value=='18'){ return "B E";             
+            }elseif($value=='34'){ return "B F";               
+            }elseif($value=='12'){ return "C D";              
+            }elseif($value=='20'){ return "C E";              
+            }elseif($value=='36'){ return "C F";                
+            }elseif($value=='24'){ return "D E";              
+            }elseif($value=='40'){ return "D F";               
+            }elseif($value=='48'){ return "E F";
+            }elseif($value=='7'){ return "A B C";
+            }elseif($value=='11'){ return "A B D";
+            }elseif($value=='19'){ return "A B E";
+            }elseif($value=='35'){ return "A B F";
+            }elseif($value=='13'){ return "A C D";
+            }elseif($value=='21'){ return "A C E";
+            }elseif($value=='37'){ return "A C F";
+            }elseif($value=='14'){ return "B C D";
+            }elseif($value=='22'){ return "B C E";
+            }elseif($value=='38'){ return "B C F";
+            }elseif($value=='26'){ return "B D E";
+            }elseif($value=='42'){ return "B D F";
+            }elseif($value=='28'){ return "C D E";
+            }elseif($value=='46'){ return "C D F";
+            }elseif($value=='52'){ return "C E F";
+            }elseif($value=='56'){ return "D E F";
+            }elseif($value=='15'){ return "A B C D";
+            }elseif($value=='23'){ return "A B C E";
+            }elseif($value=='39'){ return "A B C F";
+            }elseif($value=='30'){ return "B C D E";
+            }elseif($value=='46'){ return "B C D F";
+            }elseif($value=='60'){ return "C D E F";
+            }elseif($value=='31'){ return "A B C D E";
+            }elseif($value=='47'){ return "A B C D F";
+            }elseif($value=='62'){ return "B C D E F";
+            }elseif($value=='63'){ return "A B C D E F";
+            }
+        }
+    }
+}
+
+
 if(!function_exists('convertEPPS')){
     function convertEPPS($ceks)
     {
