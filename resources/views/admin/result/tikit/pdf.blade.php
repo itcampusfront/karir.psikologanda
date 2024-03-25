@@ -3,7 +3,7 @@
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
-	<title>Hasil Tes TIU</title>
+	<title>Hasil Tes TIKI-T</title>
 	<link rel="shortcut icon" href="{{ asset('assets/images/icon.png') }}">
 	<style>
 	    @page, body {margin-bottom: 10px;, padding-top: 10px; padding-bottom: 10px;}
@@ -34,7 +34,7 @@
         <img src="{{ asset('assets/images/logo-2-black.png') }}" height="20">
         <div class="page-number" data-nama="{{ $name }}" data-site="www.psikologanda.com"></div>
     </div>
-    <h5 class="text-center font-weight-bold mt-3 mb-4">Hasil Tes TIU</h5>
+    <h5 class="text-center font-weight-bold mt-3 mb-4">Hasil Tes TIKIT-T</h5>
     <table width="100%" border="1" style="margin-top: 20px;">
         <tr>
             <td align="center">Nama : {{ $name }}</td>
@@ -47,33 +47,59 @@
     {{-- <table width="100%"> --}}
         {{-- <tr> --}}
             {{-- <td align="center"> --}}
-                <table width="100%" class="w-auto">
+                <table width="100%" border="1">
                     <tbody>
-                        {{-- <tr>
+                        <tr>
                             <td style="text-align: left"><b>Test</b></td>
-                            <td style="text-align: left">:</td>
-                            @for($i=0; $i< count($jawaban) ; $i++)
-                                <td><b>Tiki T-{{ $i+1 }}</b></td>
+                            @for($i=0; $i< 6 ; $i++)
+                                <td style="text-align: center"><b>Tiki T-{{ $i+1 }}</b></td>
                             @endfor
                         </tr>
                         <tr>
                             <td style="text-align: left">Score Benar</td>
-                            <td style="text-align: left">:</td>
-                            @for($i=0; $i< count($jawaban) ; $i++)
-                            <td>
+                            @for($i=0; $i< 6 ; $i++)
+                            <td style="text-align: center">
                                 {{ $jawaban[$i]['benar'] }}
                             </td>
                             @endfor
                         </tr>
                         <tr>
                             <td style="text-align: left">Score Penilaian</td>
-                            <td style="text-align: left">:</td>
-                            @for($i=0; $i< count($jawaban) ; $i++)
-                            <td>
+                            @for($i=0; $i< 6; $i++)
+                            <td style="text-align: center">
                                 {{ $jawaban[$i]['score'] }}
                             </td>
                             @endfor
-                        </tr> --}}
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                <br>
+                <table width="100%" border="1">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left"><b>Test</b></td>
+                            @for($i=6; $i< count($jawaban) ; $i++)
+                                <td style="text-align: center"><b>Tiki T-{{ $i+1 }}</b></td>
+                            @endfor
+                        </tr>
+                        <tr>
+                            <td style="text-align: left">Score Benar</td>
+                            @for($i=6; $i< count($jawaban) ; $i++)
+                            <td style="text-align: center">
+                                {{ $jawaban[$i]['benar'] }}
+                            </td>
+                            @endfor
+                        </tr>
+                        <tr>
+                            <td style="text-align: left">Score Penilaian</td>
+                            @for($i=6; $i< count($jawaban); $i++)
+                            <td style="text-align: center">
+                                {{ $jawaban[$i]['score'] }}
+                            </td>
+                            @endfor
+                        </tr>
+                        
                     </tbody>
                 </table>
 

@@ -2,13 +2,15 @@
 
 namespace App\Exports;
 
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class EmployeeExport implements WithHeadings, FromCollection, WithMapping, WithEvents
+class EmployeeExport implements FromView
 {
 
     public function __construct($employees)
@@ -16,28 +18,34 @@ class EmployeeExport implements WithHeadings, FromCollection, WithMapping, WithE
         $this->employees = $employees;
     }
 
-    public function collection()
+    // public function collection()
+    // {
+    //     return $this->employees;
+    // }
+    public function view(): View
     {
-        return $this->employees;
+    	// View
+    	return view('admin.employee.excel', [
+    		'employees' => $this->employees
+    	]);
     }
+    // public function map($employ): array{
 
-    public function map($employ): array{
-
-        return [
-            $employ->user->name,
-            $employ->user->email,
-            $employ->address,
-            $employ->phone_number,
-            $employ->birthdate != null ? date('d/m/Y', strtotime($employ->birthdate)) : '',
-            $employ->gender,
-            $employ->latest_education,
-            $employ->start_date != null ? date('d/m/Y', strtotime($employ->start_date)) : '',
-            $employ->office->name,
-            $employ->position->name,
-            $employ->company->name,
-            $employ->inspection
-        ];
-    }
+    //     return [
+    //         $employ->user->name,
+    //         $employ->user->email,
+    //         $employ->address,
+    //         $employ->birthdate != null ? date('d/m/Y', strtotime($employ->birthdate)) : '',
+    //         $employ->gender,
+    //         $employ->phone_number,
+    //         $employ->latest_education,
+    //         $employ->start_date != null ? date('d/m/Y', strtotime($employ->start_date)) : '',
+    //         $employ->office->name,
+    //         $employ->position->name,
+    //         $employ->company->name,
+    //         $employ->inspection
+    //     ];
+    // }
 
     public function registerEvents(): array
     {

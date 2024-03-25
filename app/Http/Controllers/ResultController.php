@@ -93,14 +93,6 @@ class ResultController extends \App\Http\Controllers\Controller
                                     ->has('test');           
             }
 
-            // Set
-            // if(count($results) > 0) {
-            //     foreach($results as $key=>$result) {
-            //         $results[$key]->position_name = $user->attribute->position ? $user->attribute->position->name : '-';
-
-            //     }
-            // }
-
             // Return
             return DataTables::of($results)
                 ->addColumn('checkbox', '<input type="checkbox" class="form-check-input checkbox-one">')
@@ -197,9 +189,11 @@ class ResultController extends \App\Http\Controllers\Controller
             $result = Result::has('user')->has('company')->has('test')->where('company_id','=',$company->id)->findOrFail($id);
         }
 
+        //array tikit
+        $array_tikit = ['tiki','tiki-1','tiki-2','tiki-3','tiki-4','tiki-5','tiki-6','tiki-7','tiki-8','tiki-9','tiki-10','tiki-11'];
         // JSON decode
         $result->result = json_decode($result->result, true);
-
+        $tes_code = $result->test->code;
         // DISC 1.0
         if($result->test->code == 'disc-40-soal')
             return DISC1Controller::detail($result);
@@ -239,7 +233,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return TIUController::detail($result);
         elseif($result->test->code == 'epps')
             return EPPSController::detail($result);
-        elseif($result->test->code == 'tiki')
+        elseif(in_array($tes_code, $array_tikit))
             return TIKITController::detail($result);
     }
 

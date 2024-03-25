@@ -484,6 +484,7 @@ class EmployeeController extends \App\Http\Controllers\Controller
         // Set filename
         $filename = $company ? 'Data Karyawan '.$company->name.' ('.date('Y-m-d-H-i-s').')' : 'Data Semua Karyawan ('.date('d-m-Y-H-i-s').')';
 
+        // dd($employees);
         // Return
         return Excel::download(new EmployeeExport($employees), $filename.'.xlsx');
     }

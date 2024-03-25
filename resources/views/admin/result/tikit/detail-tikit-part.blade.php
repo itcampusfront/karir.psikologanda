@@ -50,42 +50,32 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="false">Deskripsi</button>
                     </li>
-                    @for($i=0; $i< count($jawaban) ; $i++)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="answer-tab{{ $i }}" data-bs-toggle="tab" data-bs-target="#answer{{ $i }}" type="button" role="tab" aria-controls="answer{{ $i }}" aria-selected="false">Tiki T-{{ $i+1 }}</button>
+                        <button class="nav-link" id="answer-tab" data-bs-toggle="tab" data-bs-target="#answer" type="button" role="tab" aria-controls="answer" aria-selected="false">Jawaban</button>
                     </li>
-                    @endfor
                     
                 </ul>
                 <div class="tab-content p-2" id="myTabContent">
                     <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                         <p class="h4 text-center fw-bold mb-5">Nama Tes: {{ $result->test->name }}</p>
-                        <table class="table table-responsive">
+                        <table class="table table-responsive" style="max-width: 50%">
                             <tbody>
                                 <tr>
-                                    <td style="text-align: left"><b>Test</b></td>
-                                    <td style="text-align: left">:</td>
-                                    @for($i=0; $i< count($jawaban) ; $i++)
-                                        <td><b>Tiki T-{{ $i+1 }}</b></td>
-                                    @endfor
+                                    <td style="text-align: left"><b>Test</b></td>                                 
+                                    <td style="text-align: left"></td>                                 
+                                    <td style="text-align: left"></td>                                 
                                 </tr>
                                 <tr>
                                     <td style="text-align: left">Score Benar</td>
                                     <td style="text-align: left">:</td>
-                                    @for($i=0; $i< count($jawaban) ; $i++)
-                                    <td>
-                                        {{ $jawaban[$i]['benar'] }}
-                                    </td>
-                                    @endfor
+                                    <td style="text-align: left"><b>{{ $jawaban['benar'] }}</b></td>
+
                                 </tr>
                                 <tr>
                                     <td style="text-align: left">Score Penilaian</td>
                                     <td style="text-align: left">:</td>
-                                    @for($i=0; $i< count($jawaban) ; $i++)
-                                    <td>
-                                        {{ $jawaban[$i]['score'] }}
-                                    </td>
-                                    @endfor
+                                    <td style="text-align: left"><b>{{ $jawaban['score'] }}</b></td>
+
                                 </tr>
                             </tbody>
                         </table>
@@ -93,44 +83,43 @@
 
 
                     </div>
-                    @for($i=0; $i< count($jawaban) ; $i++) 
-                        <div class="tab-pane fade" id="answer{{ $i }}" role="tabpanel" aria-labelledby="answer-tab{{ $i }}">
-                            <div class="row">
-                                @if($i == 0)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
-                                @elseif ($i == 1)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 2, 'k_parameter'=>13])
-                                @elseif ($i == 2)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
-                                @elseif ($i == 3)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>6])
-                                @elseif ($i == 4)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>4])
-                                @elseif ($i == 5)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 20, 'k_parameter'=>5])
-                                @elseif ($i == 6)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>6])
-                                @elseif ($i == 7)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
-                                @elseif ($i == 8)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 3, 'k_parameter'=>6])
-                                @elseif ($i == 9)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 4, 'k_parameter'=>5])
-                                @elseif ($i == 10)
-                                    @include('admin.result.tikit.table',['j_parameter'=> 6, 'k_parameter'=>10])
-                                @else
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>Kosong</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                @endif
+                    <div class="tab-pane fade" id="answer" role="tabpanel" aria-labelledby="answer-tab">
+                        <div class="row">
 
-                            </div>
+                                    @if($result->test_id == 24)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
+                                    @elseif ($result->test_id == 25)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 2, 'k_parameter'=>13])
+                                    @elseif ($result->test_id == 26)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
+                                    @elseif ($result->test_id == 27)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>6])
+                                    @elseif ($result->test_id == 28)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>4])
+                                    @elseif ($result->test_id == 29)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 20, 'k_parameter'=>5])
+                                    @elseif ($result->test_id == 30)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>6])
+                                    @elseif ($result->test_id == 31)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 5, 'k_parameter'=>8])
+                                    @elseif ($result->test_id == 32)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 3, 'k_parameter'=>6])
+                                    @elseif ($result->test_id == 33)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 4, 'k_parameter'=>5])
+                                    @elseif ($result->test_id == 34)
+                                        @include('admin.result.tikit.table',['j_parameter'=> 6, 'k_parameter'=>10])
+                                    @else
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Kosong</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    @endif
                         </div>
-                    @endfor
+                    </div>
+                 
                 </div>
             </div>
         </div>

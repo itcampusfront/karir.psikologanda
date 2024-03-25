@@ -70,6 +70,7 @@
 
 <script type="text/javascript">
    //Datatable
+
     $(document).ready(function(){
         $('#datatable').DataTable({
             processing: true,

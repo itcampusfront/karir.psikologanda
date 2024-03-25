@@ -21,19 +21,19 @@
 	<tr>
 		<td>{{ $employee->id }}</td>
 		<td>{{ ($key+1) }}</td>
-        <td>{{ $employee->name }}</td>
-        <td>{{ $employee->attribute->birthdate != null ? date('d/m/Y', strtotime($employee->attribute->birthdate)) : '' }}</td>
-        <td>{{ $employee->attribute->gender }}</td>
+        <td>{{ $employee->user->name }}</td>
+        <td>{{ $employee->birthdate != null ? date('d/m/Y', strtotime($employee->birthdate)) : '' }}</td>
+        <td>{{ $employee->gender }}</td>
         <td>{{ $employee->email }}</td>
-        <td>{{ $employee->attribute->phone_number }}</td>
-        <td>{{ $employee->attribute->address }}</td>
-        <td>{{ $employee->attribute->latest_education }}</td>
-        <td>{{ $employee->attribute->start_date != null ? date('d/m/Y', strtotime($employee->attribute->start_date)) : '' }}</td>
-        <td>{{ $employee->attribute->office ? $employee->attribute->office->name : '' }}</td>
-        <td>{{ $employee->attribute->position ? $employee->attribute->position->name : '' }}</td>
-		<td>{{ $employee->attribute->inspection }}</td>
+        <td>{{ $employee->phone_number }}</td>
+        <td>{{ $employee->address }}</td>
+        <td>{{ $employee->latest_education }}</td>
+        <td>{{ $employee->start_date != null ? date('d/m/Y', strtotime($employee->start_date)) : '' }}</td>
+        <td>{{ $employee->office ? $employee->office->name : '' }}</td>
+        <td>{{ $employee->position ? $employee->position->name : '' }}</td>
+		<td>{{ $employee->inspection }}</td>
 		@if(Auth::user()->role->is_global === 1)
-        <td>{{ $employee->attribute->company->name }}</td>
+        <td>{{ $employee->company->name }}</td>
         @endif
 	</tr>
 	@endforeach

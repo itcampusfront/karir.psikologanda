@@ -8,7 +8,10 @@ use App\Models\Company;
 
 if(!function_exists('convertOption')){
     function convertOption($i, $value){
-        if($i == 2 || $i == 4 || $i == 8 || $i == 3){
+        //25,26,27,31 = test_id 
+        //2,3,4,8 = id
+        $array_cek = [2,3,4,8,25,26,27,31];
+        if(in_array($i, $array_cek)){
             if($value=='1'){ return "A";
             }elseif($value=='2'){ return "B";
             }elseif($value=='4'){ return "C";

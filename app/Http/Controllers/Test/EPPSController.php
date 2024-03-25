@@ -29,7 +29,7 @@ class EPPSController extends Controller
 
     public static function print(Request $request)
     {
-        // dd($request->all());
+
         $result = Result::where('id', $request->id)->first();
         $result_decode = json_decode($result->result, true);
         $converts = convertEPPS($result_decode['T']);
