@@ -1,5 +1,6 @@
 <table border="1">
 	<tr>
+		<td width="0"></td>
 		<td align="center" width="5" style="background-color: #f88315;"><strong>No.</strong></td>
 		<td align="center" width="40" style="background-color: #f88315;"><strong>Nama</strong></td>
 		<td align="center" width="30" style="background-color: #f88315;"><strong>Tempat Lahir</strong></td>
@@ -18,6 +19,7 @@
 	</tr>
 	@foreach($applicants as $key=>$applicant)
 	<tr>
+		<td>{{ $applicants->id }}</td>
 		<td>{{ ($key+1) }}</td>
         <td>{{ strtoupper($applicant->name) }}</td>
         <td>{{ $applicant->attribute->birthplace }}</td>

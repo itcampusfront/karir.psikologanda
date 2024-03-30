@@ -75,7 +75,8 @@
                     <p>
                         Tata cara mengimport data karyawan:
                         <ol>
-                            <li>Ekspor terlebih dahulu data <strong><a href="{{ route('admin.employee.export') }}">Disini</a></strong>.</li>
+                            <li>Jika ingin update data yang ada,download <strong><a href="{{ route('admin.employee.export') }}">Disini</a></strong>.</li>
+                            <li>Jika ingin import data baru,download <strong><a href="{{ asset('assets/import-file/import_excel.xlsx') }}">Disini</a></strong>.</li>
                             <li>Jika ingin menambah data baru, tambahkan data di bawah baris data terakhir dari file yang sudah diekspor tadi.</li>
                             <li>Pastikan semua kolom tidak boleh kosong.</li>
                             <li>Impor data dari file excel yang sudah diubah tadi di bawah ini:</li>

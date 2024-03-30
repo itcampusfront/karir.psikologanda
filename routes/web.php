@@ -193,6 +193,7 @@ Route::group(['middleware' => ['admin']], function() {
 	Route::post('/admin/internship/update', [InternshipController::class, 'update'])->name('admin.internship.update');
 	Route::post('/admin/internship/delete', [InternshipController::class, 'delete'])->name('admin.internship.delete');
 	Route::get('/admin/internship/export', [InternshipController::class, 'export'])->name('admin.internship.export');
+	Route::post('/admin/internship/import', [InternshipController::class, 'import'])->name('admin.internship.import');
 	
 	// Student
 	Route::get('/admin/student', [StudentController::class,'index'])->name('admin.student.index');

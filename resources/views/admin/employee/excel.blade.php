@@ -1,6 +1,6 @@
 <table border="1">
 	<tr>
-		<td width="0"></td>
+		<td></td>
 		<td align="center" width="5" style="background-color: #f88315;"><strong>No.</strong></td>
 		<td align="center" width="40" style="background-color: #f88315;"><strong>Nama</strong></td>
 		<td align="center" width="20" style="background-color: #f88315;"><strong>Tanggal Lahir</strong></td>

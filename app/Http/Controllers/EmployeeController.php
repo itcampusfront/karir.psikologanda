@@ -147,6 +147,7 @@ class EmployeeController extends \App\Http\Controllers\Controller
                 ->make(true);
         }
 
+        
         // Get companies
         $companies = Company::orderBy('name','asc')->get();
 
@@ -514,10 +515,13 @@ class EmployeeController extends \App\Http\Controllers\Controller
             // Get rows from array
             $rows = Excel::toArray(new EmployeeImport, $request->file('file'));
 
+            $cek_row = $rows[0];
+            // dd($cek_row);
             // Loop employees
-            if(count($rows) > 0) {
-                foreach($rows[0] as $cells) {
+            if(count($cek_row) > 0) {
+                foreach($cek_row as $cells) {
                     // Set birthdate
+                   
                     if(is_int($cells[3])) {
                         $birthdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[3]);
                         $birthdate = (array)$birthdate;

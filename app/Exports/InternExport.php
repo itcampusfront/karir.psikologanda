@@ -40,9 +40,10 @@ class InternExport implements FromCollection, WithEvents, WithHeadings,WithMappi
             AfterSheet::class    => function(AfterSheet $event) {
                 $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(40);
                 $event->sheet->getDelegate()->getColumnDimension('B')->setWidth(40);
-                $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(70);
+                $event->sheet->getDelegate()->getColumnDimension('C')->setWidth(40);
                 $event->sheet->getDelegate()->getColumnDimension('D')->setWidth(23);
                 $event->sheet->getDelegate()->getColumnDimension('E')->setWidth(20);
+                $event->sheet->getDelegate()->getColumnDimension('F')->setWidth(20);
             },
         ];
     }
@@ -50,7 +51,7 @@ class InternExport implements FromCollection, WithEvents, WithHeadings,WithMappi
     public function headings(): array
     {
         return[
-            'Nama','Email','username','Alamat','Nomor HP'
+            'Nama','Email','username','Alamat','Nomor HP', 'Jabatan'
         ];
     }
     

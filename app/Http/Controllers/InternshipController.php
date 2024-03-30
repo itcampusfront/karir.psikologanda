@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\User;
+use App\Models\Office;
 use App\Models\Company;
 use App\Models\Vacancy;
+use App\Models\Position;
 use App\Models\Selection;
 use App\Models\UserSocmed;
 use App\Models\UserGuardian;
 use Illuminate\Http\Request;
 use App\Exports\InternExport;
+use App\Imports\MagangImport;
 use App\Models\UserAttribute;
 use App\Exports\ApplicantExport;
 use Yajra\DataTables\DataTables;
@@ -310,19 +313,23 @@ class InternshipController extends Controller
     {
         // Check the access
         has_access(method(__METHOD__), Auth::user()->role_id);
-
+        
         // Get the internship
         if (Auth::user()->role->is_global === 1) {
             $internship = User::whereHas('attribute', function (Builder $query) {
                 return $query->has('company')->has('vacancy');
             })->where('role_id', '=', role('internship'))->findOrFail($id);
         } elseif (Auth::user()->role->is_global === 0) {
+            
             $company = Company::find(Auth::user()->attribute->company_id);
+            
             $internship = User::whereHas('attribute', function (Builder $query) use ($company) {
                 return $query->has('company')->has('vacancy')->where('company_id', '=', $company->id);
-            })->where('role_id', '=', role('internship'))->findOrFail($id);
+            })->where('role_id', '=', role('internship'))->find($id);
+            // dd($internship);
         }
 
+        
         // Get attachments
         $photo = $internship->attachments()->where('attachment_id', '=', 1)->first();
         $internship->photo = $photo ? $photo->file : '';
@@ -332,6 +339,7 @@ class InternshipController extends Controller
         // Get the selection
         $selection = Selection::has('user')->has('company')->has('vacancy')->where('user_id', '=', $internship->id)->where('vacancy_id', '=', $internship->attribute->vacancy_id)->first();
 
+        // dd($selection);
         // View
         return view('admin/internship/detail', [
             'internship' => $internship,
@@ -510,8 +518,6 @@ class InternshipController extends Controller
             })->where('role_id', '=', role('internship'))->orderBy('id', 'desc')->get();
 
         }
-
-
         
         // Set filename
         $filename = $company ? 'Data Magang ' . $company->name . ' (' . date('Y-m-d-H-i-s') . ')' : 'Data Semua Magang (' . date('d-m-Y-H-i-s') . ')';
@@ -541,6 +547,158 @@ class InternshipController extends Controller
             $filename = 'Data Magang ' . $hrd->perusahaan . ' (' . date('Y-m-d-H-i-s') . ')';
 
             return Excel::download(new InternExport($internships), $filename . '.xlsx');
+        }
+    }
+
+    public function import(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required'
+        ], validationMessages());
+
+        if($validator->fails()) {
+            // Back to form page with validation error messages
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+        else {
+            // Ini set
+            ini_set('max_execution_time', 600);
+
+            // Get rows from array
+            $rows = Excel::toArray(new MagangImport, $request->file('file'));
+            $company_id = Auth::user()->company->id;
+            $cek_row = $rows[0];
+            $position_vacancy = $cek_row[0][11];
+            // dd($cek_row);
+            $vacancy = Vacancy::select('id','name','position_id','company_id')
+            ->whereHas('position', function($query) use ($position_vacancy){
+                return $query->where('name', 'LIKE', $position_vacancy);
+            })
+            ->where('company_id', '=', $company_id)->first();
+            // dd($vacancy);
+            if(count($cek_row) > 0) {
+                foreach($cek_row as $cells) {
+                    // Set birthdate
+                   
+                    if(is_int($cells[3])) {
+                        $birthdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[3]);
+                        $birthdate = (array)$birthdate;
+                        $birthdate = date('d/m/Y', strtotime($birthdate['date']));
+                    }
+                    else {
+                        $birthdate = $cells[3];
+                    }
+
+                    // Set start date
+                    if(is_int($cells[3])) {
+                        $startdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[9]);
+                        $startdate = (array)$startdate;
+                        $startdate = date('d/m/Y', strtotime($startdate['date']));
+                    }
+                    else {
+                        $startdate = $cells[9];
+                    }
+
+                    // Get the office
+                    if($cells[10] != null) {
+                        $office = Office::where('company_id','=',$request->company_id)->where('name','=',$cells[10])->first();
+                        if(!$office) {
+                            $office = new Office;
+                            $office->company_id = $request->company_id;
+                            $office->name = $cells[10];
+                            $office->address = '';
+                            $office->phone_number = '';
+                            $office->is_main = 0;
+                            $office->save();
+                        }
+                    }
+
+                    // Update the user position
+                    if($cells[11] != null) {
+                        $position = Position::where('company_id','=',$request->company_id)->where('name','=',$cells[11])->first();
+                        if(!$position) {
+                            $position = new Position;
+                            $position->company_id = $request->company_id;
+                            $position->role_id = role('employee');
+                            $position->name = $cells[11];
+                            $position->save();
+                        }
+                    }
+
+                    // Get the user
+                    $user = User::find($cells[0]);
+
+                    if($user) {
+                        // Update the user
+                        $user->name = $cells[2];
+                        $user->email = $cells[5];
+                        $user->save();
+
+                        // Update the user attribute
+                        if($cells[10] != null) $user->attribute->office_id = $office->id;
+                        if($cells[11] != null) $user->attribute->position_id = $position->id;
+                        $user->attribute->birthdate = DateTimeExt::change($birthdate);
+                        $user->attribute->gender = $cells[4];
+                        $user->attribute->phone_number = $cells[6];
+                        $user->attribute->address = $cells[7] != null ? $cells[7] : '';
+                        $user->attribute->latest_education = $cells[8] != null ? $cells[8] : '';
+						$user->attribute->inspection = $cells[12] != null ? $cells[12] : '';
+                        $user->attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
+                        $user->attribute->save();
+                    }
+                    else {
+                        // Generate username
+                        $company = Company::find($request->company_id);
+                        $data_user = User::whereHas('attribute', function (Builder $query) use ($company) {
+                            return $query->has('company')->where('company_id','=',$company->id);
+                        })->where('username','like',$company->code.'%')->latest('username')->first();
+                        if(!$data_user)
+                            $username = generate_username(null, $company->code);
+                        else
+                            $username = generate_username($data_user->username, $company->code);
+
+                        // Save the user
+                        $user = new User;
+                        $user->role_id = role('internship');
+                        $user->name = $cells[2];
+                        $user->email = $cells[5];
+                        $user->username = $username;
+                        $user->password = bcrypt($username);
+                        $user->access_token = null;
+                        $user->avatar = '';
+                        $user->status = 1;
+                        $user->last_visit = null;
+                        $user->save();
+
+                        // Save the user attributes
+                        $user_attribute = new UserAttribute;
+                        $user_attribute->user_id = $user->id;
+                        $user_attribute->company_id = $company->id;
+                        $user_attribute->office_id = Auth::user()->role->is_global === 0 && isset($office) && $cells[10] != null ? $office->id : 0;
+                        $user_attribute->position_id = Auth::user()->role->is_global === 0 && isset($position) && $cells[11] != null ? $position->id : 0;
+                        $user_attribute->vacancy_id = $vacancy->id;
+                        $user_attribute->birthdate = DateTimeExt::change($birthdate);
+                        $user_attribute->birthplace = '';
+                        $user_attribute->gender = $cells[4];
+                        $user_attribute->country_code = 'ID';
+                        $user_attribute->dial_code = '+62';
+                        $user_attribute->phone_number = $cells[6];
+                        $user_attribute->address = $cells[7] != null ? $cells[7] : '';
+                        $user_attribute->identity_number = '';
+                        $user_attribute->religion = 0;
+                        $user_attribute->relationship = 0;
+                        $user_attribute->latest_education = $cells[8] != null ? $cells[8] : '';
+						$user_attribute->inspection = $cells[12] != null ? $cells[12] : '';
+                        $user_attribute->job_experience = '';
+                        $user_attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
+                        $user_attribute->end_date = null;
+                        $user_attribute->save();
+                    }
+                }
+            }
+
+            // Redirect
+            return redirect()->route('admin.internship.index')->with(['message' => 'Berhasil mengimpor data.']);
         }
     }
 }

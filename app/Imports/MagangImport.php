@@ -2,16 +2,24 @@
 
 namespace App\Imports;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class MagangImport implements ToCollection
+class MagangImport implements ToArray, WithStartRow
 {
     /**
     * @param Collection $collection
     */
-    public function collection(Collection $collection)
+    public function array(array $array)
     {
         //
+    }
+
+    /**
+     * @return int
+     */
+    public function startRow(): int
+    {
+        return 2;
     }
 }
