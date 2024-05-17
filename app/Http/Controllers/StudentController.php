@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Auth;
 use DataTables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
-use Ajifatur\Helpers\DateTimeExt;
-use App\Exports\StudentExport;
-use App\Imports\StudentImport;
-use App\Models\Company;
 use App\Models\User;
-use App\Models\UserAttribute;
 use App\Models\Office;
+use App\Models\Company;
 use App\Models\Position;
+use Illuminate\Http\Request;
+use App\Models\UserAttribute;
+use App\Exports\StudentExport;
+use App\Imports\StudentsImport;
+use Ajifatur\Helpers\DateTimeExt;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends \App\Http\Controllers\Controller
 {
@@ -487,6 +487,7 @@ class StudentController extends \App\Http\Controllers\Controller
         }
         elseif(Auth::user()->role->is_global === 0) {
             $company = Company::find(Auth::user()->attribute->company_id);
+
             // $students = User::whereHas('attribute', function (Builder $query) use ($company) {
             //     return $query->has('company')->where('company_id','=',$company->id);
             // })->where('role_id','=',role('student'))->get();
@@ -495,7 +496,7 @@ class StudentController extends \App\Http\Controllers\Controller
                         ->whereHas('user', function($query){
                             return $query->where('role_id','=',8);
                         })
-                        ->whereHas('company', function($query){
+                        ->whereHas('company', function($query) use ($company){
                             return $query->where('id','=', $company->id);
                         })
                         ->get();
@@ -531,7 +532,7 @@ class StudentController extends \App\Http\Controllers\Controller
             ini_set('max_execution_time', 600);
 
             // Get rows from array
-            $rows = Excel::toArray(new StudentImport, $request->file('file'));
+            $rows = Excel::toArray(new StudentsImport, $request->file('file'));
 
             // Loop students
             if(count($rows) > 0) {

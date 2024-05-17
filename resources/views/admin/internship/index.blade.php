@@ -9,7 +9,7 @@
     <div class="btn-group">
         <a href="{{ route('admin.internship.create') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Magang</a>
         <a href="{{ route('admin.internship.export') }}" class="btn btn-sm btn-success"><i class="bi-file-excel me-1"></i> Ekspor Data</a>
-        @if((Auth::user()->role->is_global == 1 && Request::query('company') != null) || Auth::user()->role->is_global == 0)
+        @if((Auth::user()->role->is_admin == 1) )
         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modal-import"><i class="bi-upload me-1"></i> Impor Data</a>
         @endif
     </div>
