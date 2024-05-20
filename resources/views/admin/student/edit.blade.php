@@ -155,6 +155,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Ussername</label>
+                        <div class="col-lg-10 col-md-9">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="username" class="form-control form-control-sm {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ $student->username }}" autocomplete="off">
+                            </div>
+                            @if($errors->has('username'))
+                            <div class="small text-danger">{{ $errors->first('username') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Status <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             @foreach(status() as $status)

@@ -389,6 +389,7 @@ class StudentController extends \App\Http\Controllers\Controller
             'status' => 'required',
             'office' => 'required',
             'position' => 'required',
+            'username' => 'required'
         ], validationMessages());
         
         // Check errors
@@ -400,6 +401,7 @@ class StudentController extends \App\Http\Controllers\Controller
             // Update the user
             $user = User::find($request->id);
             $user->name = $request->name;
+            $user->username = $request->username;
             $user->email = $request->email;
             $user->status = $request->status;
             $user->save();

@@ -163,32 +163,7 @@
         }
     })
 
-    $('.checkbox-all').click(function(){
-        if(this.checked){
-            $('.checkbox1').each(function() {
-                this.checked = true;                        
-            })
-        }
-        else{
-            $('.checkbox1').each(function() {
-                this.checked = false;                        
-            })
-        }
-    })
 
-    function deleteAll(){
-        var id = [];
-        $('.checkbox1').each(function() {
-            if(this.checked){
-                id.push($(this).val());
-            }
-        })
-        $('input[name="id[]"]').val(id);
-
-        if(id.length > 0){
-            $('.form-deleteAll').submit();
-        }
-    }
 
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");
