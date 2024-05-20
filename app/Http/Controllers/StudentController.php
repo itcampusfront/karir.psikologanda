@@ -81,7 +81,10 @@ class StudentController extends \App\Http\Controllers\Controller
 
             // Return
             return DataTables::of($students)
-                ->addColumn('checkbox', '<input type="checkbox" class="form-check-input checkbox-one">')
+                ->addColumn('checkbox', function($query){
+                    $check = '<input type="checkbox" class="form-check-input checkbox1" value="'.$query->user->id.'">';
+                    return $check;
+                })
                 ->editColumn('user.username', function($query){
                     return $query->user->username;
                 })
@@ -431,6 +434,8 @@ class StudentController extends \App\Http\Controllers\Controller
         // Check the access
         has_access(method(__METHOD__), Auth::user()->role_id);
         
+        dd($request->all());
+
         // Get the student
         $student = User::find($request->id);
 
@@ -439,6 +444,17 @@ class StudentController extends \App\Http\Controllers\Controller
 
         // Redirect
         return redirect()->route('admin.student.index')->with(['message' => 'Berhasil menghapus data.']);
+    }
+
+    public function deleteAll(Request $request)
+    {
+        $ids = $request->id; 
+        $delete_record = explode(',', $ids[0]);
+
+        $student = User::whereIn('id',$delete_record)->delete();
+        
+        return redirect()->route('admin.student.index')->with(['message' => 'Berhasil menghapus data.']);
+
     }
 
     /**

@@ -17,9 +17,9 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card">
-            @if(Auth::user()->role->is_global === 1)
             <div class="card-header d-sm-flex justify-content-end align-items-center">
                 <div></div>
+                @if(Auth::user()->role->is_global === 1)
                 <div class="ms-sm-2 ms-0">
                     <select id="company" name="company" class="form-select form-select-sm">
                         <option value="0">Semua Perusahaan</option>
@@ -28,9 +28,12 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
+                <div class="ms-sm-2 ms-0">
+                    <a type="button" class="btn btn-sm btn-light deleteAll" onclick="deleteAll()">Delete All</a>
+                </div>
             </div>
             <hr class="my-0">
-            @endif
             <div class="card-body">
                 @if(Session::get('message'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -104,6 +107,10 @@
     <input type="hidden" name="id">
 </form>
 
+<form class="form-deleteAll d-none" method="post" action="{{ route('admin.student.deleteAll') }}">
+    @csrf
+    <input type="hidden" id="ids" name="id[]">
+</form>
 @endsection
 
 @section('js')
@@ -155,6 +162,33 @@
             window.location.href = "{{ url('/admin/student/export') }}";
         }
     })
+
+    $('.checkbox-all').click(function(){
+        if(this.checked){
+            $('.checkbox1').each(function() {
+                this.checked = true;                        
+            })
+        }
+        else{
+            $('.checkbox1').each(function() {
+                this.checked = false;                        
+            })
+        }
+    })
+
+    function deleteAll(){
+        var id = [];
+        $('.checkbox1').each(function() {
+            if(this.checked){
+                id.push($(this).val());
+            }
+        })
+        $('input[name="id[]"]').val(id);
+
+        if(id.length > 0){
+            $('.form-deleteAll').submit();
+        }
+    }
 
     // Button Delete
     Spandiv.ButtonDelete(".btn-delete", ".form-delete");

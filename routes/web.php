@@ -203,6 +203,7 @@ Route::group(['middleware' => ['admin']], function() {
 	Route::get('/admin/student/edit/{id}', [StudentController::class,'edit'])->name('admin.student.edit');
 	Route::post('/admin/student/update', [StudentController::class,'update'])->name('admin.student.update');
 	Route::post('/admin/student/delete', [StudentController::class,'delete'])->name('admin.student.delete');
+	Route::post('/admin/student/deleteAll', [StudentController::class,'deleteAll'])->name('admin.student.deleteAll');
 	Route::get('/admin/student/export', [StudentController::class,'export'])->name('admin.student.export');
 	Route::post('/admin/student/import', [StudentController::class,'import'])->name('admin.student.import');
 
