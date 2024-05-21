@@ -651,6 +651,15 @@ class StudentController extends \App\Http\Controllers\Controller
                             $user->last_visit = null;
                             $user->save();
 
+                            //GENDER
+                            if(in_array($cells[4], ['laki-laki','L','laki-laki','Laki-Laki','Laki-laki','Laki','laki'])){
+                                $cells[4] = 'L';
+                            }
+                            if(in_array($cells[4],['perempuan','P','Perempuan','perempuan','wanita'])){
+                                $cells[4] = 'P';
+                            }
+
+
                             // Save the user attributes
                             $user_attribute = new UserAttribute;
                             $user_attribute->user_id = $user->id;
@@ -675,9 +684,6 @@ class StudentController extends \App\Http\Controllers\Controller
                             $user_attribute->end_date = null;
                             $user_attribute->save();
                         }
-                    }
-                    else{
-                        return redirect()->route('admin.student.index')->with(['message' => 'Ada data kosong.']);
                     }
                 }
 
