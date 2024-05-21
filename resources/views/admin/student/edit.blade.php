@@ -166,6 +166,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Password</label>
+                        <div class="col-lg-10 col-md-9">
+                            <div class="input-group input-group-sm">
+                                <input placeholder="kosongi bila tidak dirubah" type="password" name="password" class="form-control form-control-sm {{ $errors->has('password') ? 'border-danger' : '' }}" autocomplete="off">
+                            </div>
+                            @if($errors->has('password'))
+                            <div class="small text-danger">{{ $errors->first('password') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Status <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             @foreach(status() as $status)

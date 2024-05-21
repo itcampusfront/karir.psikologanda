@@ -400,6 +400,9 @@ class StudentController extends \App\Http\Controllers\Controller
         else {
             // Update the user
             $user = User::find($request->id);
+            $password = $request->password == null ? $user->password : bcrypt($request->password);
+
+            $user->password = $password;
             $user->name = $request->name;
             $user->username = $request->username;
             $user->email = $request->email;
