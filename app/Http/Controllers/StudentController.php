@@ -555,125 +555,132 @@ class StudentController extends \App\Http\Controllers\Controller
             // Get rows from array
             $rows = Excel::toArray(new StudentsImport, $request->file('file'));
 
+           
             // Loop students
             if(count($rows) > 0) {
                 foreach($rows[0] as $cells) {
-                    // Set birthdate
-                    if(is_int($cells[3])) {
-                        $birthdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[3]);
-                        $birthdate = (array)$birthdate;
-                        $birthdate = date('d/m/Y', strtotime($birthdate['date']));
-                    }
-                    else {
-                        $birthdate = $cells[3];
-                    }
+                    if($cells[2] != null){
+                        // Set birthdate
+                        if(is_int($cells[3])) {
+                            $birthdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[3]);
+                            $birthdate = (array)$birthdate;
+                            $birthdate = date('d/m/Y', strtotime($birthdate['date']));
+                        }
+                        else {
+                            $birthdate = $cells[3];
+                        }
 
-                    // Set start date
-                    if(is_int($cells[3])) {
-                        $startdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[9]);
-                        $startdate = (array)$startdate;
-                        $startdate = date('d/m/Y', strtotime($startdate['date']));
-                    }
-                    else {
-                        $startdate = $cells[9];
-                    }
+                        // Set start date
+                        if(is_int($cells[3])) {
+                            $startdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($cells[9]);
+                            $startdate = (array)$startdate;
+                            $startdate = date('d/m/Y', strtotime($startdate['date']));
+                        }
+                        else {
+                            $startdate = $cells[9];
+                        }
 
-                    // Get the office
-                    if($cells[10] != null) {
-                        $office = Office::where('company_id','=',$request->company_id)->where('name','=',$cells[10])->first();
-                        if(!$office) {
-                            $office = new Office;
-                            $office->company_id = $request->company_id;
-                            $office->name = $cells[10];
-                            $office->address = '';
-                            $office->phone_number = '';
-                            $office->is_main = 0;
-                            $office->save();
+                        // Get the office
+                        if($cells[10] != null) {
+                            $office = Office::where('company_id','=',$request->company_id)->where('name','=',$cells[10])->first();
+                            if(!$office) {
+                                $office = new Office;
+                                $office->company_id = $request->company_id;
+                                $office->name = $cells[10];
+                                $office->address = '';
+                                $office->phone_number = '';
+                                $office->is_main = 0;
+                                $office->save();
+                            }
+                        }
+
+                        // Update the user position
+                        if($cells[11] != null) {
+                            $position = Position::where('company_id','=',$request->company_id)->where('name','=',$cells[11])->first();
+                            if(!$position) {
+                                $position = new Position;
+                                $position->company_id = $request->company_id;
+                                $position->role_id = role('student');
+                                $position->name = $cells[11];
+                                $position->save();
+                            }
+                        }
+
+                        // Get the user
+                        $user = User::find($cells[0]);
+
+                        if($user) {
+                            // Update the user
+                            $user->name = $cells[2];
+                            $user->email = $cells[5];
+                            $user->save();
+
+                            // Update the user attribute
+                            if($cells[10] != null) $user->attribute->office_id = $office->id;
+                            if($cells[11] != null) $user->attribute->position_id = $position->id;
+                            $user->attribute->birthdate = DateTimeExt::change($birthdate);
+                            $user->attribute->gender = $cells[4];
+                            $user->attribute->phone_number = $cells[6];
+                            $user->attribute->address = $cells[7] != null ? $cells[7] : '';
+                            $user->attribute->latest_education = $cells[8] != null ? $cells[8] : '';
+                            $user->attribute->inspection = $cells[12] != null ? $cells[12] : '';
+                            $user->attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
+                            $user->attribute->save();
+                        }
+                        else {
+                            // Generate username
+                            $company = Company::find($request->company_id);
+                            $data_user = User::whereHas('attribute', function (Builder $query) use ($company) {
+                                return $query->has('company')->where('company_id','=',$company->id);
+                            })->where('username','like',$company->code.'%')->latest('username')->first();
+                            if(!$data_user)
+                                $username = generate_username(null, $company->code);
+                            else
+                                $username = generate_username($data_user->username, $company->code);
+
+                            // Save the user
+                            $user = new User;
+                            $user->role_id = role('student');
+                            $user->name = $cells[2];
+                            $user->email = $cells[5];
+                            $user->username = $username;
+                            $user->password = bcrypt($username);
+                            $user->access_token = null;
+                            $user->avatar = '';
+                            $user->status = 1;
+                            $user->last_visit = null;
+                            $user->save();
+
+                            // Save the user attributes
+                            $user_attribute = new UserAttribute;
+                            $user_attribute->user_id = $user->id;
+                            $user_attribute->company_id = $company->id;
+                            $user_attribute->office_id = Auth::user()->role->is_global === 0 && isset($office) && $cells[10] != null ? $office->id : 0;
+                            $user_attribute->position_id = Auth::user()->role->is_global === 0 && isset($position) && $cells[11] != null ? $position->id : 0;
+                            $user_attribute->vacancy_id = 0;
+                            $user_attribute->birthdate = DateTimeExt::change($birthdate);
+                            $user_attribute->birthplace = '';
+                            $user_attribute->gender = $cells[4];
+                            $user_attribute->country_code = 'ID';
+                            $user_attribute->dial_code = '+62';
+                            $user_attribute->phone_number = $cells[6];
+                            $user_attribute->address = $cells[7] != null ? $cells[7] : '';
+                            $user_attribute->identity_number = '';
+                            $user_attribute->religion = 0;
+                            $user_attribute->relationship = 0;
+                            $user_attribute->latest_education = $cells[8] != null ? $cells[8] : '';
+                            $user_attribute->inspection = $cells[12] != null ? $cells[12] : '';
+                            $user_attribute->job_experience = '';
+                            $user_attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
+                            $user_attribute->end_date = null;
+                            $user_attribute->save();
                         }
                     }
-
-                    // Update the user position
-                    if($cells[11] != null) {
-                        $position = Position::where('company_id','=',$request->company_id)->where('name','=',$cells[11])->first();
-                        if(!$position) {
-                            $position = new Position;
-                            $position->company_id = $request->company_id;
-                            $position->role_id = role('student');
-                            $position->name = $cells[11];
-                            $position->save();
-                        }
-                    }
-
-                    // Get the user
-                    $user = User::find($cells[0]);
-
-                    if($user) {
-                        // Update the user
-                        $user->name = $cells[2];
-                        $user->email = $cells[5];
-                        $user->save();
-
-                        // Update the user attribute
-                        if($cells[10] != null) $user->attribute->office_id = $office->id;
-                        if($cells[11] != null) $user->attribute->position_id = $position->id;
-                        $user->attribute->birthdate = DateTimeExt::change($birthdate);
-                        $user->attribute->gender = $cells[4];
-                        $user->attribute->phone_number = $cells[6];
-                        $user->attribute->address = $cells[7] != null ? $cells[7] : '';
-                        $user->attribute->latest_education = $cells[8] != null ? $cells[8] : '';
-						$user->attribute->inspection = $cells[12] != null ? $cells[12] : '';
-                        $user->attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
-                        $user->attribute->save();
-                    }
-                    else {
-                        // Generate username
-                        $company = Company::find($request->company_id);
-                        $data_user = User::whereHas('attribute', function (Builder $query) use ($company) {
-                            return $query->has('company')->where('company_id','=',$company->id);
-                        })->where('username','like',$company->code.'%')->latest('username')->first();
-                        if(!$data_user)
-                            $username = generate_username(null, $company->code);
-                        else
-                            $username = generate_username($data_user->username, $company->code);
-
-                        // Save the user
-                        $user = new User;
-                        $user->role_id = role('student');
-                        $user->name = $cells[2];
-                        $user->email = $cells[5];
-                        $user->username = $username;
-                        $user->password = bcrypt($username);
-                        $user->access_token = null;
-                        $user->avatar = '';
-                        $user->status = 1;
-                        $user->last_visit = null;
-                        $user->save();
-
-                        // Save the user attributes
-                        $user_attribute = new UserAttribute;
-                        $user_attribute->user_id = $user->id;
-                        $user_attribute->company_id = $company->id;
-                        $user_attribute->office_id = Auth::user()->role->is_global === 0 && isset($office) && $cells[10] != null ? $office->id : 0;
-                        $user_attribute->position_id = Auth::user()->role->is_global === 0 && isset($position) && $cells[11] != null ? $position->id : 0;
-                        $user_attribute->vacancy_id = 0;
-                        $user_attribute->birthdate = DateTimeExt::change($birthdate);
-                        $user_attribute->birthplace = '';
-                        $user_attribute->gender = $cells[4];
-                        $user_attribute->country_code = 'ID';
-                        $user_attribute->dial_code = '+62';
-                        $user_attribute->phone_number = $cells[6];
-                        $user_attribute->address = $cells[7] != null ? $cells[7] : '';
-                        $user_attribute->identity_number = '';
-                        $user_attribute->religion = 0;
-                        $user_attribute->relationship = 0;
-                        $user_attribute->latest_education = $cells[8] != null ? $cells[8] : '';
-                        $user_attribute->inspection = $cells[12] != null ? $cells[12] : '';
-						$user_attribute->job_experience = '';
-                        $user_attribute->start_date = $startdate != null ? DateTimeExt::change($startdate) : null;
-                        $user_attribute->end_date = null;
-                        $user_attribute->save();
+                    else{
+                        return redirect()->route('admin.student.index')->with(['message' => 'Ada data kosong.']);
                     }
                 }
+
             }
 
             // Redirect
