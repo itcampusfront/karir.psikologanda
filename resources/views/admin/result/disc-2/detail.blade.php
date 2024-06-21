@@ -150,20 +150,23 @@
                                             </ul>
                                         </p>
                                     </div>
-                                    <div class="col-lg-4 col-md-6 mb-3">
-                                        @php
-                                            $karakteristik2 = explode(', ', $description->description[$index['least'][0]]['karakteristik']);
-                                        @endphp
-                                        <h5>Core Private Self</h5>
-                                        <p class="fw-bold">{{ $description->description[$index['least'][0]]['tipe'] }}</p>
-                                        <p>
-                                            <ul>
-                                            @foreach($karakteristik2 as $karakter)
-                                                <li>{{ $karakter }}</li>
-                                            @endforeach
-                                            </ul>
-                                        </p>
-                                    </div>
+                                    @if(!array_key_exists('least', $index))          
+                                        <div class="col-lg-4 col-md-6 mb-3">
+                                            @php
+                                                $karakteristik2 = explode(', ', $description->description[$index['least'][0]]['karakteristik']);
+                                            @endphp
+                                            <h5>Core Private Self</h5>
+                                            <p class="fw-bold">{{ $description->description[$index['least'][0]]['tipe'] }}</p>
+                                            <p>
+                                                <ul>
+                                                @foreach($karakteristik2 as $karakter)
+                                                    <li>{{ $karakter }}</li>
+                                                @endforeach
+                                                </ul>
+                                            </p>
+                                        </div>
+                                    @endif
+
                                     <div class="col-lg-4 col-md-6 mb-3">
                                         @php
                                             $karakteristik3 = explode(', ', $description->description[$index['change'][0]]['karakteristik']);

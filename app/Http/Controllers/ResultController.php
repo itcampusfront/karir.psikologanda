@@ -177,6 +177,7 @@ class ResultController extends \App\Http\Controllers\Controller
      */
     public function detail($id)
     {
+        
         // Check the access
         has_access(method(__METHOD__), Auth::user()->role_id);
 
@@ -199,6 +200,7 @@ class ResultController extends \App\Http\Controllers\Controller
             return DISC1Controller::detail($result);
         // DISC 2.0
         elseif($result->test->code == 'disc-24-soal' || $result->test->code == 'disc-24-soal-1')
+            
             return DISC2Controller::detail($result);
         // IST
         elseif($result->test->code == 'ist')

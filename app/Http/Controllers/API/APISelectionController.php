@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Test;
 use App\Models\Selection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,5 +18,10 @@ class APISelectionController extends Controller
 
             return response()->json($selection, 200);
         }
+    }
+
+    public function getData(Request $request){
+        $tests = Test::all();
+        return response()->json(['data'=>$tests]);
     }
 }

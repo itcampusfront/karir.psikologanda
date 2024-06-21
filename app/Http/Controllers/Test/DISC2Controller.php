@@ -156,6 +156,8 @@ class DISC2Controller extends \App\Http\Controllers\Controller
             'least' => [],
             'change' => [],
         ];
+
+        
         for($i = 0; $i < 40; $i++) {
             array_push($array_kepribadian['most'], analisis_disc_24($i + 1, $graph[1]['D'], $graph[1]['I'], $graph[1]['S'], $graph[1]['C']));
             array_push($array_kepribadian['least'], analisis_disc_24($i + 1, $graph[2]['D'], $graph[2]['I'], $graph[2]['S'], $graph[2]['C']));
@@ -177,6 +179,8 @@ class DISC2Controller extends \App\Http\Controllers\Controller
         foreach($array_kepribadian['change'] as $key=>$value) {
             if($value == 1) array_push($index['change'], $key);
         }
+
+        // dd($array_kepribadian);
 
         // Set the description
         $description = Description::where('packet_id','=',$result->packet_id)->first();
@@ -212,7 +216,9 @@ class DISC2Controller extends \App\Http\Controllers\Controller
 		
 		// Set the MOST, LEAST, CHANGE
 		$most = $description->description[$index['most'][0]];
-		$least = $description->description[$index['least'][0]];
+        if(!array_key_exists('least', $index)){
+            $least = $description->description[$index['least'][0]];
+        }    
 		$change = $description->description[$index['change'][0]];
         
         // PDF

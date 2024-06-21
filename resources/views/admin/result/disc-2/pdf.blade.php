@@ -129,17 +129,19 @@
 					@endforeach
 				</ul>
 			</td>
-            <td valign="top">
-				@php
-					$karakteristik2 = explode(', ', $least['karakteristik']);
-				@endphp
-				<strong>{{ $least['tipe'] }}</strong>
-				<ul>
-					@foreach($karakteristik2 as $karakter)
-					<li>{{ $karakter }}</li>
-					@endforeach
-				</ul>
-			</td>
+            @if(!array_key_exists('least', $index))          
+                <td valign="top">
+                    @php
+                        $karakteristik2 = explode(', ', $least['karakteristik']);
+                    @endphp
+                    <strong>{{ $least['tipe'] }}</strong>
+                    <ul>
+                        @foreach($karakteristik2 as $karakter)
+                        <li>{{ $karakter }}</li>
+                        @endforeach
+                    </ul>
+                </td>
+            @endif
             <td valign="top">
 				@php
 					$karakteristik3 = explode(', ', $change['karakteristik']);

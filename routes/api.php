@@ -25,5 +25,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/vacancy', [VacancyController::class,'index'])->name('api.vacancy.index');
 Route::get('/vacancy/{url}', [VacancyController::class,'detail'])->name('api.vacancy.detail');
 Route::get('/selection/detail', [APISelectionController::class,'detail'])->name('api.selection.detail');
+Route::get('/tests', [APISelectionController::class,'getData'])->name('api.selection.tests');
 
 \Ajifatur\Helpers\RouteExt::api();
