@@ -129,7 +129,7 @@
 					@endforeach
 				</ul>
 			</td>
-            @if(!array_key_exists('least', $index))          
+            @if(array_key_exists('least', $index))
                 <td valign="top">
                     @php
                         $karakteristik2 = explode(', ', $least['karakteristik']);

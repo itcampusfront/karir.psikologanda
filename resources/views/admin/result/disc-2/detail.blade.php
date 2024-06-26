@@ -150,7 +150,7 @@
                                             </ul>
                                         </p>
                                     </div>
-                                    @if(!array_key_exists('least', $index))          
+                                    @if(array_key_exists('least', $index))
                                         <div class="col-lg-4 col-md-6 mb-3">
                                             @php
                                                 $karakteristik2 = explode(', ', $description->description[$index['least'][0]]['karakteristik']);

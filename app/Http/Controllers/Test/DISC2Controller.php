@@ -157,7 +157,7 @@ class DISC2Controller extends \App\Http\Controllers\Controller
             'change' => [],
         ];
 
-        
+
         for($i = 0; $i < 40; $i++) {
             array_push($array_kepribadian['most'], analisis_disc_24($i + 1, $graph[1]['D'], $graph[1]['I'], $graph[1]['S'], $graph[1]['C']));
             array_push($array_kepribadian['least'], analisis_disc_24($i + 1, $graph[2]['D'], $graph[2]['I'], $graph[2]['S'], $graph[2]['C']));
@@ -206,21 +206,20 @@ class DISC2Controller extends \App\Http\Controllers\Controller
     {
         // Set the DISC
         $disc = array('D', 'I', 'S','C');
-		
+
 		// Set the index
 		$index = json_decode($request->index, true);
-		
+
         // Set the description
         $description = Description::where('packet_id','=',$request->packet_id)->first();
         $description->description = json_decode($description->description, true);
-		
+
 		// Set the MOST, LEAST, CHANGE
 		$most = $description->description[$index['most'][0]];
-        if(!array_key_exists('least', $index)){
+        if(array_key_exists('least', $index)){
             $least = $description->description[$index['least'][0]];
-        }    
+        }
 		$change = $description->description[$index['change'][0]];
-        
         // PDF
         $pdf = PDF::loadview('admin/result/disc-2/pdf', [
             'mostChartImage' => $request->mostChartImage,
@@ -240,26 +239,26 @@ class DISC2Controller extends \App\Http\Controllers\Controller
             'change' => $change,
         ]);
         $pdf->setPaper('A4', 'portrait');
-        
+
         return $pdf->stream($request->name . '_' . $request->test . '.pdf');
     }
     public static function cetak(Request $request)
     {
         // Set the DISC
         $disc = array('D', 'I', 'S','C');
-		
+
 		// Set the index
 		$index = json_decode($request->index, true);
-		
+
         // Set the description
         $description = Description::where('packet_id','=',$request->packet_id)->first();
         $description->description = json_decode($description->description, true);
-		
+
 		// Set the MOST, LEAST, CHANGE
 		$most = $description->description[$index['most'][0]];
 		$least = $description->description[$index['least'][0]];
 		$change = $description->description[$index['change'][0]];
-        
+
         // PDF
         $pdf = PDF::loadview('admin/result/disc-2/pdf', [
             'mostChartImage' => $request->mostChartImage,
@@ -279,7 +278,7 @@ class DISC2Controller extends \App\Http\Controllers\Controller
             'change' => $change,
         ]);
         $pdf->setPaper('A4', 'portrait');
-        
+
         return $pdf->stream($request->name . '_' . $request->test . '.pdf');
     }
 }
